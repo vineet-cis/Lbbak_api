@@ -130,9 +130,12 @@ namespace Lbbak_api
                     float x = (float)(bitmap.Width * ann.XPercent / 100.0f);
                     float y = (float)(bitmap.Height * ann.YPercent / 100.0f);
 
-                    using var blob = SKTextBlob.Create(ann.Text ?? "", font);
+                    if (!string.IsNullOrWhiteSpace(ann.Text))
+                    {
+                        using var blob = SKTextBlob.Create(ann.Text, font);
+                        canvas.DrawText(blob, x, y, paint);
+                    }
 
-                    canvas.DrawText(blob, x, y, paint);
                 }
 
                 canvas.Flush();
