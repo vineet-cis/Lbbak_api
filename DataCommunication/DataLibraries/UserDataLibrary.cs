@@ -27,7 +27,7 @@ namespace DataCommunication.DataLibraries
         public async Task<User> GetUserOnly(Guid Id)
         {
             return await context.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id && !x.IsDeleted);
+                .FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         public async Task<string> GetUserByCodeAndNumber(string? code, string? number)

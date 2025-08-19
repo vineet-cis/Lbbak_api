@@ -52,5 +52,16 @@ namespace Lbbak_api.Controllers
         }
 
         #endregion
+
+        #region Image Upload
+
+        [HttpPost("ImageUpload")]
+        public async Task<CommonResponseTemplate> ImageUpload(ImageUpload.Command user)
+        {
+            return await Mediator.Send(user);
+        }
+
+        #endregion
+
     }
 }

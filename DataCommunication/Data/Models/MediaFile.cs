@@ -13,7 +13,7 @@ namespace DataCommunication
         public byte[]? Data { get; set; }
         public byte[]? FlattenedData { get; set; }
         public string? SqlUserId { get; set; }
-        public int SqlCardId { get; set; }
+        public int? SqlCardId { get; set; }
         public List<TextAnnotation>? Annotations { get; set; }
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
     }

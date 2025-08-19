@@ -43,13 +43,10 @@ namespace Handlers.User
                             CreatedAt = user.CreatedAt,
                             UserType = user.UserType.Name,
                             FullName = user.Name,
-                            ProfileImageUrl = user.IndividualProfile?.ProfileImageUrl ?? user.CompanyProfile?.LogoUrl,
+                            ProfileImageUrl = user.ProfileMediaId,
                             Gender = user.IndividualProfile?.Gender,
                             DateOfBirth = user.IndividualProfile?.DateOfBirth,
                             IBAN = user.IndividualProfile?.IBAN ?? user.CompanyProfile?.IBAN,
-                            LogoUrl = user.CompanyProfile?.LogoUrl,
-                            DesignSpeciality = user.DesignerProfile?.DesignSpeciality,
-                            PortfolioLink = user.DesignerProfile?.PortfolioLink
                         };
 
                         return new CommonResponseTemplate<UserResponseDto>

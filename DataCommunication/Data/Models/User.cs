@@ -16,6 +16,7 @@
         public string Status { get; set; } = "Active"; // or from foreign table later
         public string? Country { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? DeletedAt { get; set; }
         public string? ProfileMediaId { get; set; }
         public bool TwoFactorEnabled { get; set; }
 

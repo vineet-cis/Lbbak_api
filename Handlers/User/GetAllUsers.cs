@@ -45,13 +45,10 @@ namespace Handlers.User
                             CreatedAt = u.CreatedAt,
                             UserType = u.UserType.Name,
                             FullName = u.Name,
-                            ProfileImageUrl = u.IndividualProfile?.ProfileImageUrl ?? u.CompanyProfile?.LogoUrl,
+                            ProfileImageUrl = u.ProfileMediaId,
                             Gender = u.IndividualProfile?.Gender,
                             DateOfBirth = u.IndividualProfile?.DateOfBirth,
                             IBAN = u.IndividualProfile?.IBAN ?? u.CompanyProfile?.IBAN,
-                            LogoUrl = u.CompanyProfile?.LogoUrl,
-                            DesignSpeciality = u.DesignerProfile?.DesignSpeciality,
-                            PortfolioLink = u.DesignerProfile?.PortfolioLink
 
                         }).ToList();
 
