@@ -29,6 +29,10 @@ namespace Handlers.User
 
                     if (user != null)
                     {
+                        var nameParts = (user.Name ?? string.Empty).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        var firstName = nameParts.Length > 0 ? nameParts[0] : string.Empty;
+                        var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty;
+
                         var model = new UserResponseDto
                         {
                             Id = user.Id,
@@ -43,6 +47,8 @@ namespace Handlers.User
                             CreatedAt = user.CreatedAt,
                             UserType = user.UserType.Name,
                             FullName = user.Name,
+                            FirstName = firstName,
+                            LastName = lastName,
                             ProfileImageUrl = user.ProfileMediaId,
                             Gender = user.IndividualProfile?.Gender,
                             DateOfBirth = user.IndividualProfile?.DateOfBirth,

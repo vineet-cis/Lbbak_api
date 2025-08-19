@@ -31,26 +31,35 @@ namespace Handlers.User
 
                     if(users.Count > 0)
                     {
-                        var userDtoList = users.Select(u => new UserResponseDto
+                        var userDtoList = users.Select(u =>
                         {
-                            Id = u.Id,
-                            MobileNumber = u.MobileNumber,
-                            Email = u.Email,
-                            UserTypeId = u.UserTypeId,
-                            Country = u.Country,
-                            CountryCode = u.CountryCode,
-                            TwoFactorEnabled = u.TwoFactorEnabled,
-                            CommercialRegistrationNumber = u.CompanyProfile?.CommercialRegistrationNumber ?? null,
-                            Status = u.Status,
-                            CreatedAt = u.CreatedAt,
-                            UserType = u.UserType.Name,
-                            FullName = u.Name,
-                            ProfileImageUrl = u.ProfileMediaId,
-                            Gender = u.IndividualProfile?.Gender,
-                            DateOfBirth = u.IndividualProfile?.DateOfBirth,
-                            IBAN = u.IndividualProfile?.IBAN ?? u.CompanyProfile?.IBAN,
+                            var nameParts = (u.Name ?? string.Empty).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                            var firstName = nameParts.Length > 0 ? nameParts[0] : string.Empty;
+                            var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty;
 
+                            return new UserResponseDto
+                            {
+                                Id = u.Id,
+                                MobileNumber = u.MobileNumber,
+                                Email = u.Email,
+                                UserTypeId = u.UserTypeId,
+                                Country = u.Country,
+                                CountryCode = u.CountryCode,
+                                TwoFactorEnabled = u.TwoFactorEnabled,
+                                CommercialRegistrationNumber = u.CompanyProfile?.CommercialRegistrationNumber ?? null,
+                                Status = u.Status,
+                                CreatedAt = u.CreatedAt,
+                                UserType = u.UserType.Name,
+                                FullName = u.Name,
+                                FirstName = firstName,
+                                LastName = lastName,
+                                ProfileImageUrl = u.ProfileMediaId,
+                                Gender = u.IndividualProfile?.Gender,
+                                DateOfBirth = u.IndividualProfile?.DateOfBirth,
+                                IBAN = u.IndividualProfile?.IBAN ?? u.CompanyProfile?.IBAN
+                            };
                         }).ToList();
+
 
                         return new CommonResponseTemplateWithDataArrayList<UserResponseDto>
                         {

@@ -53,7 +53,7 @@ namespace Handlers.Mobile.User
                         TwoFactorEnabled = true
                     });
 
-                    var individualProfile = await UserDL.CreateIndividual(new IndividualUser
+                     var individualProfile = await UserDL.CreateIndividual(new IndividualUser
                     {
                         Id = Guid.NewGuid(),
                         UserId = user.Id,

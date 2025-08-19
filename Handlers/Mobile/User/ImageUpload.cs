@@ -42,9 +42,10 @@ namespace Handlers.Mobile.User
 
                     if (user != null)
                     {
+                        var mediaId = "";
                         if(request.formFile != null && request.formFile.Length > 0)
                         {
-                            var mediaId = await _media.UploadAsync(request.formFile, null, user.Id.ToString());
+                            mediaId = await _media.UploadAsync(request.formFile, null, user.Id.ToString());
                             user.ProfileMediaId = mediaId;
                             await UserDL.UpdateUser(user);
                         }
@@ -54,7 +55,7 @@ namespace Handlers.Mobile.User
                                 responseCode = ResponseCode.Empty.ToString(),
                                 statusCode = HttpStatusCodes.InvalidInput,
                                 msg = "Invalid Image!",
-                                data = user.Id.ToString()
+                                data = null
                             };
 
                         return new CommonResponseTemplate
@@ -62,7 +63,7 @@ namespace Handlers.Mobile.User
                             responseCode = ResponseCode.Success.ToString(),
                             statusCode = HttpStatusCodes.OK,
                             msg = "Image Uploaded Successfully!",
-                            data = user.Id.ToString()
+                            data = $"/Image/GetImage?id={mediaId}"
                         };
                     }
                     else
