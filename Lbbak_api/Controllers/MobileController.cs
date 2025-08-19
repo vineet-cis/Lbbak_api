@@ -1,5 +1,6 @@
 ﻿using DataCommunication;
 using Handlers.Mobile.User;
+using Handlers.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lbbak_api.Controllers
@@ -40,6 +41,12 @@ namespace Lbbak_api.Controllers
 
         [HttpPost("RegisterAsCompany")]
         public async Task<CommonResponseTemplate> RegisterAsCompany(RegisterAsCompany.RegisterAsCompanyCommand user)
+        {
+            return await Mediator.Send(user);
+        }
+
+        [HttpPost("UpdateUserMobile")]
+        public async Task<CommonResponseTemplate> UpdateUser(UpdateUserMobile.UpdateUserCommand user)
         {
             return await Mediator.Send(user);
         }

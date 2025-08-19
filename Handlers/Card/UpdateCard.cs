@@ -70,7 +70,7 @@ namespace Handlers.Card
                     mediaId = await _media.UploadAsync(request.formFile, annotations);
                     card.ProfileMediaId = mediaId; // SQL stores only ID
                 }
-                else if (mediaId != null && annotations != null)
+                else if (mediaId != null && annotations != null && annotations.Any())
                     await _media.UpdateAnnotationsAsync(mediaId, annotations);
 
 

@@ -11,6 +11,7 @@ namespace Handlers.Mobile.User
         public class RegisterAsCompanyCommand : IRequest<CommonResponseTemplate>
         {
             public string? CountryCode { get; set; }
+            public string? Country { get; set; }
             public string? MobileNumber { get; set; }
             public string? CommercialRegistrationNumber { get; set; }
         }
@@ -52,6 +53,7 @@ namespace Handlers.Mobile.User
                         MobileNumber = request.MobileNumber,
                         UserTypeId = 2, // Company
                         CountryCode = request.CountryCode,
+                        Country = request.Country,
                         TwoFactorEnabled = true,
                     });
 

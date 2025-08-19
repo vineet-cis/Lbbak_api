@@ -71,12 +71,10 @@ namespace Handlers.Card
                                 {
                                     if (media.ContentType.Equals("image/svg+xml", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        // Keep SVG as-is, no resizing
                                         thumbnailBase64 = $"data:{media.ContentType};base64,{Convert.ToBase64String(imageData)}";
                                     }
                                     else
                                     {
-                                        // Create thumbnail for raster images
                                         var thumb = Helper.CreateThumbnail(imageData, 150, 150);
                                         thumbnailBase64 = $"data:{media.ContentType};base64,{Convert.ToBase64String(thumb)}";
                                     }

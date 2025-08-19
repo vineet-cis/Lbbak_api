@@ -14,6 +14,7 @@ namespace Handlers.Mobile.User
             public string? LastName { get; set; }
             public string? MobileNumber { get; set; }
             public string? CountryCode { get; set; }
+            public string? Country { get; set; }
             public string? Email { get; set; }
             public string? Gender { get; set; }
             public DateTime? DateOfBirth { get; set; }
@@ -47,6 +48,7 @@ namespace Handlers.Mobile.User
                         Name = request.FirstName + " " + request.LastName,
                         UserTypeId = 1, // Individual,
                         CountryCode = request.CountryCode,
+                        Country = request.Country,
                         MobileNumber = request.MobileNumber,
                         TwoFactorEnabled = true
                     });

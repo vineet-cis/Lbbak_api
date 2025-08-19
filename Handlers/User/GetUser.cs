@@ -38,6 +38,7 @@ namespace Handlers.User
                             Country = user.Country,
                             CountryCode = user.CountryCode,
                             TwoFactorEnabled = user.TwoFactorEnabled,
+                            CommercialRegistrationNumber = user.CompanyProfile?.CommercialRegistrationNumber ?? null,
                             Status = user.Status,
                             CreatedAt = user.CreatedAt,
                             UserType = user.UserType.Name,
