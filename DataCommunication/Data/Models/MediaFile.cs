@@ -24,7 +24,7 @@ namespace DataCommunication
         public double XPercent { get; set; }
         public double YPercent { get; set; }
         public float FontSize { get; set; }
-        public string? Color { get; set; }
+        public string? fontColor { get; set; }
         public string? FontFamily { get; set; }
     }
 

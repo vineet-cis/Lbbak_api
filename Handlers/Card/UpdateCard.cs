@@ -86,7 +86,7 @@ namespace Handlers.Card
                     responseCode = ResponseCode.Success.ToString(),
                     statusCode = HttpStatusCodes.OK,
                     msg = "Card Updated Successfully",
-                    data = null
+                    data = card
                 };
             }
         }

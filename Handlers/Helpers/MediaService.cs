@@ -106,37 +106,44 @@ namespace Lbbak_api
         {
             using var inputStream = new MemoryStream(originalImage);
             using var bitmap = SKBitmap.Decode(inputStream);
-            using var surface = SKSurface.Create(new SKImageInfo(bitmap.Width, bitmap.Height));
-            var canvas = surface.Canvas;
 
-            // Draw original
-            canvas.DrawBitmap(bitmap, 0, 0);
-
-            // Draw annotations
-            foreach (var ann in annotations)
+            if (bitmap != null)
             {
-                var typeface = SKTypeface.FromFamilyName(ann.FontFamily ?? "Arial");
+                using var surface = SKSurface.Create(new SKImageInfo(bitmap.Width, bitmap.Height));
+                var canvas = surface.Canvas;
 
-                using var font = new SKFont(typeface, ann.FontSize);
-                using var paint = new SKPaint
+                // Draw original
+                canvas.DrawBitmap(bitmap, 0, 0);
+
+                // Draw annotations
+                foreach (var ann in annotations)
                 {
-                    Color = SKColor.Parse(ann.Color),
-                    IsAntialias = true
-                };
+                    var typeface = SKTypeface.FromFamilyName(ann.FontFamily ?? "Arial");
 
-                float x = (float)(bitmap.Width * ann.XPercent / 100.0f);
-                float y = (float)(bitmap.Height * ann.YPercent / 100.0f);
+                    using var font = new SKFont(typeface, ann.FontSize);
+                    using var paint = new SKPaint
+                    {
+                        Color = SKColor.Parse(ann.fontColor),
+                        IsAntialias = true
+                    };
 
-                using var blob = SKTextBlob.Create(ann.Text ?? "", font);
+                    float x = (float)(bitmap.Width * ann.XPercent / 100.0f);
+                    float y = (float)(bitmap.Height * ann.YPercent / 100.0f);
 
-                canvas.DrawText(blob, x, y, paint);
+                    using var blob = SKTextBlob.Create(ann.Text ?? "", font);
+
+                    canvas.DrawText(blob, x, y, paint);
+                }
+
+                canvas.Flush();
+
+                using var image = surface.Snapshot();
+                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+                return data.ToArray();
             }
-
-            canvas.Flush();
-
-            using var image = surface.Snapshot();
-            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-            return data.ToArray();
+            else
+                return Array.Empty<byte>();
+            
         }
 
         public async Task UpdateAnnotationsAsync(string? mediaId, List<TextAnnotation> annotations)
