@@ -41,7 +41,7 @@ namespace Handlers.Card
             {
                 var imageId = "";
 
-                if(request.formFile != null)
+                if(request.formFile != null && request.formFile.Length > 0)
                 {
                     var options = new JsonSerializerOptions
                     {

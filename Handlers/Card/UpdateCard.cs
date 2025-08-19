@@ -62,7 +62,7 @@ namespace Handlers.Card
                     ? JsonSerializer.Deserialize<List<TextAnnotation>>(request.AnnotationsJson, options)
                     : new List<TextAnnotation>();
 
-                if (request.formFile != null)
+                if (request.formFile != null && request.formFile.Length > 0)
                 {
                     if(!string.IsNullOrEmpty(mediaId))
                         await _media.DeleteAsync(mediaId);
