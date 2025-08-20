@@ -18,6 +18,11 @@ namespace DataCommunication
         public DbSet<AdminRole> AdminRoles { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Card> Cards { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
+        public DbSet<City> City { get; set; }
+        public DbSet<EventInvitee> EventInvitees { get; set; }
+        public DbSet<EventCongratulator> EventCongratulators { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

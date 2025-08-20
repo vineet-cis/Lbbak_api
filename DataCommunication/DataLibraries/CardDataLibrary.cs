@@ -26,7 +26,7 @@ namespace DataCommunication.DataLibraries
 
         public async Task<List<Card>> GetAllCards()
         {
-            return await context.Cards.Where(x => x.Status != "Deleted").ToListAsync();
+            return await context.Cards.Include(c => c.EventType).Where(x => x.Status != "Deleted").AsSplitQuery().ToListAsync();
         }
 
         public async Task UpdateCard(Card card)

@@ -37,6 +37,7 @@ namespace Handlers.Card
                                 Guid = card.Guid,
                                 Name = card.Name,
                                 EventType = card.EventType,
+                                CardType = card.CardType,
                                 Description = card.Description,
                                 Status = card.Status,
                                 ProfileMediaId = card.ProfileMediaId

@@ -15,7 +15,7 @@ namespace Handlers.Card
         {
             public string? Name { get; set; }
             public string? Description { get; set; }
-            public string? EventType { get; set; }
+            public string? CardType { get; set; }
             public string? AnnotationsJson { get; set; }
             public IFormFile? formFile { get; set; }
         }
@@ -59,7 +59,7 @@ namespace Handlers.Card
                 {
                     Name = request.Name,
                     Description = request.Description,
-                    EventType = request.EventType,
+                    CardType = request.CardType,
                     ProfileMediaId = imageId,
                     Guid = Helper.GetGUID()
                 });

@@ -16,7 +16,8 @@ namespace Handlers.Card
             public string? Guid { get; set; }
             public string? Name { get; set; }
             public string? Description { get; set; }
-            public string? EventType { get; set; }
+            public string? CardType { get; set; }
+            public int? EventType { get; set; }
             public string? AnnotationsJson { get; set; }
             public IFormFile? formFile { get; set; }
         }
@@ -76,10 +77,10 @@ namespace Handlers.Card
 
                 card.Name = request.Name ?? card.Name;
                 card.Description = request.Description ?? card.Description;
-                card.EventType = request.EventType ?? card.EventType;
+                card.CardType = request.CardType ?? card.CardType;
+                card.EventTypeId = request.EventType == 0 ? null : request.EventType;
 
                 await CardDL.UpdateCard(card);
-
 
                 return new CommonResponseTemplate
                 {

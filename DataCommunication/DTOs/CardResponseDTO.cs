@@ -3,7 +3,8 @@
     public class CardResponseDTO
     {
         public string? Name { get; set; }
-        public string? EventType { get; set; }
+        public string? CardType { get; set; }
+        public EventType? EventType { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
         public string? ProfileMediaId { get; set; }

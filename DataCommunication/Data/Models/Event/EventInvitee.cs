@@ -1,0 +1,15 @@
+﻿namespace DataCommunication
+{
+    public class EventInvitee
+    {
+        public int Id { get; set; }
+        public Event Event { get; set; }
+        public int EventId { get; set; }
+        public User User { get; set; }
+        public Guid UserId { get; set; }
+
+        public string Status { get; set; }
+        public DateTime InvitedAt { get; set; }
+    }
+    
+}
