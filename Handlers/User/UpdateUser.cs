@@ -59,7 +59,6 @@ namespace Handlers.User
                             user.IndividualProfile.IBAN = request.IBAN;
                             user.IndividualProfile.BankName = request.BankName;
                             user.IndividualProfile.Gender = request.Gender;
-                            user.IndividualProfile.Age = request.Age;
                         }
                         else if (user.CompanyProfile != null)
                         {
@@ -69,7 +68,6 @@ namespace Handlers.User
                         else if (user.DesignerProfile != null)
                         {
                             user.DesignerProfile.Gender = request.Gender;
-                            user.DesignerProfile.Age = request.Age;
                         }
 
                         await UserDL.UpdateUser(user);

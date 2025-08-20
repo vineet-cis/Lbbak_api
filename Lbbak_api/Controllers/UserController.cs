@@ -25,11 +25,11 @@ namespace Lbbak_api.Controllers
         public async Task<IActionResult> BlockUser(Guid id)
         {
             var user = await UserDL.GetUserById(id);
+
             if (user == null || user.IsDeleted)
                 return NotFound("User not found");
 
-            user.IsDeleted = true;
-            user.Status = "Blocked";
+            user.Status = "InActive";
 
             await UserDL.UpdateUser(user);
             return Ok(new { message = "User blocked successfully", userId = user.Id });
@@ -39,6 +39,7 @@ namespace Lbbak_api.Controllers
         public async Task<IActionResult> UnblockUser(Guid id)
         {
             var user = await UserDL.GetUserById(id);
+
             if (user == null)
                 return NotFound("User not found");
 

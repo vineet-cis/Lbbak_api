@@ -44,6 +44,7 @@ namespace Handlers.User
                             TwoFactorEnabled = user.TwoFactorEnabled,
                             CommercialRegistrationNumber = user.CompanyProfile?.CommercialRegistrationNumber ?? null,
                             Status = user.Status,
+                            Age = user.IndividualProfile != null ? user.IndividualProfile.Age : user.DesignerProfile != null ? user.DesignerProfile.Age : 0,
                             CreatedAt = user.CreatedAt,
                             UserType = user.UserType.Name,
                             FullName = user.Name,

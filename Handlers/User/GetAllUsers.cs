@@ -47,6 +47,7 @@ namespace Handlers.User
                                 CountryCode = u.CountryCode,
                                 TwoFactorEnabled = u.TwoFactorEnabled,
                                 CommercialRegistrationNumber = u.CompanyProfile?.CommercialRegistrationNumber ?? null,
+                                Age = u.IndividualProfile != null ? u.IndividualProfile.Age : u.DesignerProfile != null ? u.DesignerProfile.Age : 0,
                                 Status = u.Status,
                                 CreatedAt = u.CreatedAt,
                                 UserType = u.UserType.Name,

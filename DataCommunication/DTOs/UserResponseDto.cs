@@ -6,6 +6,7 @@
         public string? MobileNumber { get; set; }
         public string? Email { get; set; }
         public int UserTypeId { get; set; }
+        public int Age { get; set; }
         public string? Country { get; set; }
         public string? CountryCode { get; set; }
         public bool TwoFactorEnabled { get; set; }
