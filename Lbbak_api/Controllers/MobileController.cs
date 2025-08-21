@@ -67,7 +67,7 @@ namespace Lbbak_api.Controllers
         #region Event Management
 
         [HttpPost("CreateInvitation")]
-        public async Task<CommonResponseTemplate> CreateInvitation(CreateInvitation.Command invitation)
+        public async Task<CommonResponseTemplate> CreateInvitation(CreateInvitation.CreateInviteCommand invitation)
         {
             return await Mediator.Send(invitation);
         }

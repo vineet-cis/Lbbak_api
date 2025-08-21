@@ -10,21 +10,21 @@ namespace Handlers.Event
 
     public class CreateInvitation
     {
-        public class Command : IRequest<CommonResponseTemplate>
+        public class CreateInviteCommand : IRequest<CommonResponseTemplate>
         {
             public string? Name { get; set; }
             public string? Description { get; set; }
             public Guid OwnerId { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Command>
+        public class CommandValidator : AbstractValidator<CreateInviteCommand>
         {
             public CommandValidator()
             {
             }
         }
 
-        public class Handler : IRequestHandler<Command, CommonResponseTemplate>
+        public class Handler : IRequestHandler<CreateInviteCommand, CommonResponseTemplate>
         {
             private readonly EventDataLibrary EventDL;
 
@@ -32,7 +32,7 @@ namespace Handlers.Event
             {
                 EventDL = eventDataLibrary;
             }
-            public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CommonResponseTemplate> Handle(CreateInviteCommand request, CancellationToken cancellationToken)
             {
                 try
                 {

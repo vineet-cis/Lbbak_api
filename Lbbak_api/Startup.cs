@@ -149,6 +149,7 @@ namespace Lbbak_api
             services.AddScoped<UserDataLibrary, UserDataLibrary>();
             services.AddScoped<AdminDataLibrary, AdminDataLibrary>();
             services.AddScoped<CardDataLibrary, CardDataLibrary>();
+            services.AddScoped<EventDataLibrary, EventDataLibrary>();
             services.AddSingleton<IMediaService, MediaService>();
 
         }
