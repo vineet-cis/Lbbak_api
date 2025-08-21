@@ -1,9 +1,12 @@
 ﻿using DataCommunication;
 using DataCommunication.DataLibraries;
-using Enums = DataCommunication.CommonComponents.Enums;
+using DataCommunication.DTOs;
 using FluentValidation;
 using Handlers.Helpers;
+using Lbbak_api;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Enums = DataCommunication.CommonComponents.Enums;
 
 namespace Handlers.Event
 {
@@ -12,9 +15,15 @@ namespace Handlers.Event
     {
         public class CreateInviteCommand : IRequest<CommonResponseTemplate>
         {
+            public IFormFile formFile { get; set; }
             public string? Name { get; set; }
             public string? Description { get; set; }
+            public string? Venue { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
             public Guid OwnerId { get; set; }
+            public Enums.Privacy Privacy { get; set; }
+            public List<InviteeDTO> Invitees { get; set; } = new List<InviteeDTO>();
         }
 
         public class CommandValidator : AbstractValidator<CreateInviteCommand>
@@ -27,26 +36,53 @@ namespace Handlers.Event
         public class Handler : IRequestHandler<CreateInviteCommand, CommonResponseTemplate>
         {
             private readonly EventDataLibrary EventDL;
+            private readonly IMediaService _media;
 
-            public Handler(EventDataLibrary eventDataLibrary)
+            public Handler(EventDataLibrary eventDataLibrary, IMediaService mediaService)
             {
                 EventDL = eventDataLibrary;
+                _media = mediaService;
             }
             public async Task<CommonResponseTemplate> Handle(CreateInviteCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
+                    
+
                     var invitation = new DataCommunication.Event
                     {
                         Category = Enums.EventCategory.Invitation,
-                        Privacy = Enums.Privacy.Private,
+                        Privacy = request.Privacy,
                         Name = request.Name,
                         Description = request.Description,
                         EventOwnerId = request.OwnerId,
-                        Guid = Helper.GetGUID()
+                        Venue = request.Venue,
+                        StartDate = request.StartDate,
+                        EndDate = request.EndDate,
+                        Guid = Helper.GetGUID(),
+                        Invitees = new List<EventInvitee>()
                     };
 
-                    await EventDL.CreateEvent(invitation);
+                    if(request.Invitees != null  && request.Invitees.Count > 0)
+                    {
+                        invitation.Invitees.AddRange(request.Invitees.Select(x => new EventInvitee
+                        {
+                            InvitedAt = DateTime.UtcNow,
+                            Status = Enums.InvitationStatus.Invited,
+                            InviteeName = x.Name,
+                            MobileNumber = x.MobileNumber
+
+                        }).ToList());
+                    }
+
+                    int id = await EventDL.CreateEvent(invitation);
+
+                    var mediaId = "";
+
+                    if (request.formFile != null && request.formFile.Length > 0)
+                        mediaId = await _media.UploadAsync(request.formFile, null, null, id);
+
+                    await EventDL.UpdateEventMediaId(id, mediaId);
 
                     return new CommonResponseTemplate
                     {

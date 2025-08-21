@@ -7,7 +7,7 @@ namespace Lbbak_api
 {
     public interface IMediaService
     {
-        Task<string> UploadAsync(IFormFile file, int? cardId, string? userId);
+        Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId);
         Task<string> UploadAsync(IFormFile file, List<TextAnnotation>? annotations = null);
         Task<bool> UpdateCardIdAsync(string mediaId, int newCardId);
         Task<byte[]> GetFileContentAsync(string mediaId);
@@ -26,7 +26,7 @@ namespace Lbbak_api
             _mediaCollection = database.GetCollection<MediaFile>("media");
         }
 
-        public async Task<string> UploadAsync(IFormFile file, int? cardId, string? userId)
+        public async Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId)
         {
             if (file == null || file.Length == 0)
                 throw new ArgumentException("Invalid file.");
@@ -40,7 +40,8 @@ namespace Lbbak_api
                 ContentType = file.ContentType,
                 Data = stream.ToArray(),
                 SqlUserId = userId,
-                SqlCardId = cardId
+                SqlCardId = cardId,
+                SqlEventId = eventId
             };
 
             await _mediaCollection.InsertOneAsync(media);
@@ -123,7 +124,7 @@ namespace Lbbak_api
                     using var font = new SKFont(typeface, ann.FontSize);
                     using var paint = new SKPaint
                     {
-                        Color = SKColor.Parse(ann.fontColor),
+                        Color = SKColor.Parse(ann.FontColor),
                         IsAntialias = true
                     };
 
