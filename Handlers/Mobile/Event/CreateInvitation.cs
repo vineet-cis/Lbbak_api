@@ -10,7 +10,6 @@ using Enums = DataCommunication.CommonComponents.Enums;
 
 namespace Handlers.Event
 {
-
     public class CreateInvitation
     {
         public class CreateInviteCommand : IRequest<CommonResponseTemplate>
@@ -47,8 +46,6 @@ namespace Handlers.Event
             {
                 try
                 {
-                    
-
                     var invitation = new DataCommunication.Event
                     {
                         Category = Enums.EventCategory.Invitation,

@@ -34,7 +34,7 @@ namespace DataCommunication
 
         // Styling
         public float FontSize { get; set; }
-        public string? FontColor { get; set; }
+        public string? fontColor { get; set; }
         public string? FontFamily { get; set; }
         public string? FontWeight { get; set; }
         public string? FontStyle { get; set; }

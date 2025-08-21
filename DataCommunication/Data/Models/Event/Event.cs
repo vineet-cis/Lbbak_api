@@ -9,8 +9,9 @@ namespace DataCommunication
         public string? Description { get; set; }
         public string? Venue { get; set; }
         public string? MediaId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? ScheduledOn { get; set; }
         public EventType Type { get; set; }
         public int? TypeId { get; set; }
         public User EventOwner { get; set; }

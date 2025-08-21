@@ -10,6 +10,7 @@ namespace Lbbak_api
         Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId);
         Task<string> UploadAsync(IFormFile file, List<TextAnnotation>? annotations = null);
         Task<bool> UpdateCardIdAsync(string mediaId, int newCardId);
+        Task<bool> UpdateEventIdAsync(string mediaId, int newEventId);
         Task<byte[]> GetFileContentAsync(string mediaId);
         Task<bool> DeleteAsync(string mediaId);
         Task UpdateAnnotationsAsync(string mediaId, List<TextAnnotation> annotations);
@@ -103,6 +104,15 @@ namespace Lbbak_api
             return result.ModifiedCount > 0;
         }
 
+        public async Task<bool> UpdateEventIdAsync(string mediaId, int newEventId)
+        {
+            var filter = Builders<MediaFile>.Filter.Eq(m => m.Id, mediaId);
+            var update = Builders<MediaFile>.Update.Set(m => m.SqlEventId, newEventId);
+
+            var result = await _mediaCollection.UpdateOneAsync(filter, update);
+            return result.ModifiedCount > 0;
+        }
+
         private byte[] GenerateFlattenedImage(byte[] originalImage, List<TextAnnotation> annotations)
         {
             using var inputStream = new MemoryStream(originalImage);
@@ -124,7 +134,7 @@ namespace Lbbak_api
                     using var font = new SKFont(typeface, ann.FontSize);
                     using var paint = new SKPaint
                     {
-                        Color = SKColor.Parse(ann.FontColor),
+                        Color = SKColor.Parse(ann.fontColor),
                         IsAntialias = true
                     };
 

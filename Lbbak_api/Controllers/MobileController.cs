@@ -2,6 +2,7 @@
 using DataCommunication.DTOs;
 using Handlers.Card;
 using Handlers.Event;
+using Handlers.Mobile.Event;
 using Handlers.Mobile.User;
 using Handlers.User;
 using Microsoft.AspNetCore.Mvc;
@@ -67,13 +68,18 @@ namespace Lbbak_api.Controllers
         #endregion
 
         #region Event Management
-
         
 
         [HttpPost("CreateInvitation")]
         public async Task<CommonResponseTemplate> CreateInvitation(CreateInvitation.CreateInviteCommand invitation)
         {
             return await Mediator.Send(invitation);
+        }
+
+        [HttpPost("CreateGreeting")]
+        public async Task<CommonResponseTemplate> CreateGreeting(CreateGreeting.CreateGreetCommand greet)
+        {
+            return await Mediator.Send(greet);
         }
 
         #endregion
