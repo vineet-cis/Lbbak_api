@@ -68,7 +68,13 @@ namespace Lbbak_api.Controllers
         #endregion
 
         #region Event Management
-        
+
+        [HttpGet("GetUpcomingEvents")]
+        public async Task<CommonResponseTemplateWithDataArrayList<EventResponseDTO>> GetUpcomingEvents()
+        {
+            return await Mediator.Send(new GetUpcomingEvents.Query());
+        }
+
 
         [HttpPost("CreateInvitation")]
         public async Task<CommonResponseTemplate> CreateInvitation(CreateInvitation.CreateInviteCommand invitation)
@@ -80,6 +86,12 @@ namespace Lbbak_api.Controllers
         public async Task<CommonResponseTemplate> CreateGreeting(CreateGreeting.CreateGreetCommand greet)
         {
             return await Mediator.Send(greet);
+        }
+
+        [HttpPost("CreateDocEvent")]
+        public async Task<CommonResponseTemplate> CreateDocEvent(CreateDocEvent.CreateDocEventCommand doc)
+        {
+            return await Mediator.Send(doc);
         }
 
         #endregion

@@ -65,11 +65,16 @@ namespace Handlers.Card
 
                 if (request.formFile != null && request.formFile.Length > 0)
                 {
-                    if(!string.IsNullOrEmpty(mediaId))
-                        await _media.DeleteAsync(mediaId);
-
-                    mediaId = await _media.UploadAsync(request.formFile, annotations);
-                    card.ProfileMediaId = mediaId; // SQL stores only ID
+                    if (!string.IsNullOrEmpty(mediaId))
+                    {
+                        await _media.UpdateAsync(mediaId, request.formFile, annotations);
+                    }
+                    else
+                    {
+                        // Create new
+                        mediaId = await _media.UploadAsync(request.formFile, annotations);
+                        card.ProfileMediaId = mediaId;
+                    }
                 }
                 else if (mediaId != null && annotations != null && annotations.Any())
                     await _media.UpdateAnnotationsAsync(mediaId, annotations);

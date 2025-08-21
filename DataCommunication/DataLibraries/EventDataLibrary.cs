@@ -37,5 +37,14 @@ namespace DataCommunication.DataLibraries
         {
             return await context.Events.Include(x => x.EventOwner).Include(x => x.Congratulators).Include(x => x.Invitees).AsSplitQuery().ToListAsync();
         }
+
+        public async Task<List<Event>> GetAllUpcomingEvents(Guid UserId)
+        {
+            var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "UTC", "Central Standard Time");
+
+            return await context.Events.Include(x => x.EventOwner).Include(x => x.Congratulators).Include(x => x.Invitees)
+                .Where(x => x.StartDate > today && x.Congratulators != null && x.Congratulators.Any(c => c.UserId == UserId))
+                .AsSplitQuery().ToListAsync();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Lbbak_api
     {
         Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId);
         Task<string> UploadAsync(IFormFile file, List<TextAnnotation>? annotations = null);
+        Task UpdateAsync(string mediaId, IFormFile file, List<TextAnnotation>? annotations = null);
         Task<bool> UpdateCardIdAsync(string mediaId, int newCardId);
         Task<bool> UpdateEventIdAsync(string mediaId, int newEventId);
         Task<byte[]> GetFileContentAsync(string mediaId);
@@ -81,6 +82,36 @@ namespace Lbbak_api
             {
                 return "";
             }
+        }
+
+        public async Task UpdateAsync(string mediaId, IFormFile file, List<TextAnnotation>? annotations)
+        {
+            if (string.IsNullOrEmpty(mediaId))
+                throw new ArgumentException("Invalid mediaId.");
+
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("Invalid file.");
+
+            using var stream = new MemoryStream();
+            await file.CopyToAsync(stream);
+
+            var originalBytes = stream.ToArray();
+            byte[]? flattenedBytes = null;
+
+            if (annotations != null && annotations.Count > 0)
+                flattenedBytes = GenerateFlattenedImage(originalBytes, annotations);
+
+            var update = Builders<MediaFile>.Update
+                .Set(m => m.FileName, file.FileName)
+                .Set(m => m.ContentType, file.ContentType)
+                .Set(m => m.Data, originalBytes)
+                .Set(m => m.FlattenedData, flattenedBytes)
+                .Set(m => m.Annotations, annotations);
+
+            await _mediaCollection.UpdateOneAsync(
+                m => m.Id == mediaId,
+                update
+            );
         }
 
         public async Task<byte[]> GetFileContentAsync(string mediaId)
