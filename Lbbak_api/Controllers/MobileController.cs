@@ -1,4 +1,5 @@
 ﻿using DataCommunication;
+using Handlers.Event;
 using Handlers.Mobile.User;
 using Handlers.User;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,16 @@ namespace Lbbak_api.Controllers
         public async Task<CommonResponseTemplate> ImageUpload(ImageUpload.Command user)
         {
             return await Mediator.Send(user);
+        }
+
+        #endregion
+
+        #region Event Management
+
+        [HttpPost("CreateInvitation")]
+        public async Task<CommonResponseTemplate> CreateInvitation(CreateInvitation.Command invitation)
+        {
+            return await Mediator.Send(invitation);
         }
 
         #endregion

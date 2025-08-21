@@ -21,5 +21,13 @@
             Public = 1,
             Local = 2
         }
+
+        public enum InvitationStatus
+        {
+            NaN = 0,
+            Invited = 1,
+            Accepted = 2,
+            Declined = 3
+        }
     }
 }

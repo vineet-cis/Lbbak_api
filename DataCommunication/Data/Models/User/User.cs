@@ -11,7 +11,8 @@
         public string? Name { get; set; }
         public int UserTypeId { get; set; }
         public UserType UserType { get; set; }
-
+        public City City { get; set; }
+        public int? CityId { get; set; }
         public bool IsDeleted { get; set; } = false;
         public string Status { get; set; } = "Active"; // or from foreign table later
         public string? Country { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace DataCommunication
+﻿using static DataCommunication.CommonComponents.Enums;
+
+namespace DataCommunication
 {
     public class EventInvitee
     {
@@ -8,7 +10,7 @@
         public User User { get; set; }
         public Guid UserId { get; set; }
 
-        public string Status { get; set; }
+        public InvitationStatus Status { get; set; }
         public DateTime InvitedAt { get; set; }
     }
     

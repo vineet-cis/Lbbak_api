@@ -11,6 +11,8 @@ namespace DataCommunication
         public int? TypeId { get; set; }
         public User EventOwner { get; set; }
         public Guid EventOwnerId { get; set; }
+        public Card Card { get; set; }
+        public int? CardId { get; set; }
         public EventCategory Category { get; set; }
         public Privacy Privacy { get; set; }
         public string Status { get; set; } = "Active";
