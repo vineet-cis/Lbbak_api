@@ -71,7 +71,6 @@ namespace Handlers.Card
                     }
                     else
                     {
-                        // Create new
                         mediaId = await _media.UploadAsync(request.formFile, annotations);
                         card.ProfileMediaId = mediaId;
                     }

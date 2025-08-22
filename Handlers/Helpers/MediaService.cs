@@ -146,50 +146,87 @@ namespace Lbbak_api
 
         private byte[] GenerateFlattenedImage(byte[] originalImage, List<TextAnnotation> annotations)
         {
-            using var inputStream = new MemoryStream(originalImage);
-            using var bitmap = SKBitmap.Decode(inputStream);
+            SKBitmap? bitmap = null;
 
-            if (bitmap != null)
+            try
             {
-                using var surface = SKSurface.Create(new SKImageInfo(bitmap.Width, bitmap.Height));
-                var canvas = surface.Canvas;
+                using var inputStream = new MemoryStream(originalImage);
+                bitmap = SKBitmap.Decode(inputStream);
+            }
+            catch
+            {
+                bitmap = null;
+            }
 
-                // Draw original
+            int width = bitmap?.Width ?? 800;
+            int height = bitmap?.Height ?? 600;
+
+            using var surface = SKSurface.Create(new SKImageInfo(width, height));
+            var canvas = surface.Canvas;
+
+            
+            if (bitmap != null)
                 canvas.DrawBitmap(bitmap, 0, 0);
+            else
+                canvas.Clear(SKColors.White);
 
-                // Draw annotations
-                foreach (var ann in annotations)
+            annotations.ForEach(ann => {
+
+                if (!string.IsNullOrWhiteSpace(ann.Text))
                 {
-                    var typeface = SKTypeface.FromFamilyName(ann.FontFamily ?? "Arial");
+                    var style = SKFontStyle.Normal;
+                    if (!string.IsNullOrEmpty(ann.FontWeight) || !string.IsNullOrEmpty(ann.FontStyle))
+                    {
+                        var weight = ann.FontWeight?.ToLower() == "bold" ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+                        var slant = ann.FontStyle?.ToLower() == "italic" ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+                        style = new SKFontStyle(weight, SKFontStyleWidth.Normal, slant);
+                    }
 
-                    using var font = new SKFont(typeface, ann.FontSize);
+                    using var typeface = SKTypeface.FromFamilyName(ann.FontFamily ?? "Arial", style);
+                    using var font = new SKFont(typeface, ann.FontSize > 0 ? ann.FontSize : 16f);
+
                     using var paint = new SKPaint
                     {
-                        Color = SKColor.Parse(ann.fontColor),
+                        Color = !string.IsNullOrEmpty(ann.fontColor) ? SKColor.Parse(ann.fontColor) : SKColors.Black,
                         IsAntialias = true
                     };
 
-                    float x = (float)(bitmap.Width * ann.XPercent / 100.0f);
-                    float y = (float)(bitmap.Height * ann.YPercent / 100.0f);
+                    float percentX = (float)ann.XPercent / 100f;
+                    float percentY = (float)ann.YPercent / 100f;
 
-                    if (!string.IsNullOrWhiteSpace(ann.Text))
+                    float x = width * percentX;
+                    float y = height * percentY;
+
+                    float textWidth = font.MeasureText(ann.Text, paint);
+
+                    if (ann.TextAlign?.ToLower() == "center")
+                        x -= textWidth / 2f;
+                    else if (ann.TextAlign?.ToLower() == "right")
+                        x -= textWidth;
+
+                    if (ann.RotateDeg != 0)
                     {
-                        using var blob = SKTextBlob.Create(ann.Text, font);
-                        canvas.DrawText(blob, x, y, paint);
+                        canvas.Save();
+                        canvas.Translate(x, y);
+                        canvas.RotateDegrees((float)ann.RotateDeg);
+                        canvas.DrawText(ann.Text, 0, 0, font, paint);
+                        canvas.Restore();
                     }
-
+                    else
+                    {
+                        canvas.DrawText(ann.Text, x, y, font, paint);
+                    }
                 }
 
-                canvas.Flush();
+            });
 
-                using var image = surface.Snapshot();
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                return data.ToArray();
-            }
-            else
-                return Array.Empty<byte>();
-            
+            canvas.Flush();
+
+            using var image = surface.Snapshot();
+            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+            return data.ToArray();
         }
+
 
         public async Task UpdateAnnotationsAsync(string? mediaId, List<TextAnnotation> annotations)
         {

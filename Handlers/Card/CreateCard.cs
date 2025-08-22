@@ -39,40 +39,54 @@ namespace Handlers.Card
             }
             public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
             {
-                var imageId = "";
-
-                if(request.formFile != null && request.formFile.Length > 0)
+                try
                 {
-                    var options = new JsonSerializerOptions
+                    var imageId = "";
+
+                    if (request.formFile != null && request.formFile.Length > 0)
                     {
-                        PropertyNameCaseInsensitive = true
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        };
+
+                        var annotations = !string.IsNullOrEmpty(request.AnnotationsJson)
+                            ? JsonSerializer.Deserialize<List<TextAnnotation>>(request.AnnotationsJson, options)
+                            : new List<TextAnnotation>();
+
+                        imageId = await _media.UploadAsync(request.formFile, annotations);
+                    }
+
+                    int cardId = await CardDL.CreateCard(new DataCommunication.Card
+                    {
+                        Name = request.Name,
+                        Description = request.Description,
+                        CardType = request.CardType,
+                        ProfileMediaId = imageId,
+                        Guid = Helper.GetGUID()
+                    });
+
+                    await _media.UpdateCardIdAsync(imageId, cardId);
+
+                    return new CommonResponseTemplate
+                    {
+                        responseCode = ResponseCode.Success.ToString(),
+                        statusCode = HttpStatusCodes.OK,
+                        msg = "Card Created Successfully",
+                        data = null
                     };
-
-                    var annotations = !string.IsNullOrEmpty(request.AnnotationsJson)
-                        ? JsonSerializer.Deserialize<List<TextAnnotation>>(request.AnnotationsJson, options)
-                        : new List<TextAnnotation>();
-
-                    imageId = await _media.UploadAsync(request.formFile, annotations);
                 }
-
-                int cardId = await CardDL.CreateCard(new DataCommunication.Card
+                catch (Exception ex)
                 {
-                    Name = request.Name,
-                    Description = request.Description,
-                    CardType = request.CardType,
-                    ProfileMediaId = imageId,
-                    Guid = Helper.GetGUID()
-                });
-
-                await _media.UpdateCardIdAsync(imageId, cardId);
-
-                return new CommonResponseTemplate
-                {
-                    responseCode = ResponseCode.Success.ToString(),
-                    statusCode = HttpStatusCodes.OK,
-                    msg = "Card Created Successfully",
-                    data = null
-                };
+                    return new CommonResponseTemplate
+                    {
+                        responseCode = ResponseCode.InternalServerError.ToString(),
+                        statusCode = HttpStatusCodes.InternalServerError,
+                        msg = ex.Message,
+                        data = null
+                    };
+                }
+                
             }
         }
     }
