@@ -29,5 +29,10 @@
             Accepted = 2,
             Declined = 3
         }
+
+        public enum PromotionType { Discount = 1, Promotion = 2, Advertisement = 3 }
+        public enum DiscountValueType { Percentage = 1, FixedAmount = 2 }
+        public enum PromotionScope { Local = 1, Public = 2 }
+        public enum PromotionStatus { Draft = 0, PendingPayment = 1, Scheduled = 2, Live = 3, Ended = 4, StoppedByAdmin = 5 }
     }
 }

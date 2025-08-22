@@ -24,6 +24,8 @@ namespace DataCommunication
         public DbSet<EventInvitee> EventInvitees { get; set; }
         public DbSet<EventCongratulator> EventCongratulators { get; set; }
         public DbSet<EventMedia> EventMedia { get; set; }
+        public DbSet<OfferCategory> OfferCategories { get; set; }
+        public DbSet<PromotionalOffer> PromotionalOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

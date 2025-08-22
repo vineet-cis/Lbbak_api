@@ -7,7 +7,7 @@ namespace Lbbak_api
 {
     public interface IMediaService
     {
-        Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId);
+        Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId, int? offerId);
         Task<string> UploadAsync(IFormFile file, List<TextAnnotation>? annotations = null);
         Task UpdateAsync(string mediaId, IFormFile file, List<TextAnnotation>? annotations = null);
         Task<bool> UpdateCardIdAsync(string mediaId, int newCardId);
@@ -28,7 +28,7 @@ namespace Lbbak_api
             _mediaCollection = database.GetCollection<MediaFile>("media");
         }
 
-        public async Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId)
+        public async Task<string> UploadAsync(IFormFile file, int? cardId, string? userId, int? eventId, int? offerId)
         {
             if (file == null || file.Length == 0)
                 throw new ArgumentException("Invalid file.");
@@ -43,7 +43,8 @@ namespace Lbbak_api
                 Data = stream.ToArray(),
                 SqlUserId = userId,
                 SqlCardId = cardId,
-                SqlEventId = eventId
+                SqlEventId = eventId,
+                SqlOfferId = offerId,
             };
 
             await _mediaCollection.InsertOneAsync(media);

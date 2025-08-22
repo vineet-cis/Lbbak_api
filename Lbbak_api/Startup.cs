@@ -58,7 +58,7 @@ namespace Lbbak_api
             {
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
             });
 
             // MediatR
@@ -152,6 +152,7 @@ namespace Lbbak_api
             services.AddScoped<AdminDataLibrary, AdminDataLibrary>();
             services.AddScoped<CardDataLibrary, CardDataLibrary>();
             services.AddScoped<EventDataLibrary, EventDataLibrary>();
+            services.AddScoped<OfferDataLibrary, OfferDataLibrary>();
             services.AddSingleton<IMediaService, MediaService>();
 
         }

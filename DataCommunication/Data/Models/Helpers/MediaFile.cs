@@ -15,6 +15,7 @@ namespace DataCommunication
         public string? SqlUserId { get; set; }
         public int? SqlCardId { get; set; }
         public int? SqlEventId { get; set; }
+        public int? SqlOfferId { get; set; }
         public List<TextAnnotation>? Annotations { get; set; }
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
     }

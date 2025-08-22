@@ -1,8 +1,10 @@
 ﻿using DataCommunication;
+using DataCommunication.DataLibraries;
 using DataCommunication.DTOs;
 using Handlers.Card;
 using Handlers.Event;
 using Handlers.Mobile.Event;
+using Handlers.Mobile.PromotionalOffer;
 using Handlers.Mobile.User;
 using Handlers.User;
 using Microsoft.AspNetCore.Mvc;
@@ -94,6 +96,30 @@ namespace Lbbak_api.Controllers
             return await Mediator.Send(doc);
         }
 
+        #endregion
+
+        #region Promotional Offer
+
+        [HttpGet("GetOfferTypes")]
+        public async Task<CommonResponseTemplateWithDataArrayList<OfferCategoryDTO>> GetOfferTypes()
+        {
+            return await Mediator.Send(new GetOfferTypes.Query());
+        }
+
+        [HttpGet("GetUserOffers")]
+        public async Task<CommonResponseTemplateWithDataArrayList<OfferDTO>> GetUserOffers(string guid)
+        {
+            return await Mediator.Send(new GetUserOffers.Query
+            {
+                Guid = guid
+            });
+        }
+
+        [HttpPost("CreateOffer")]
+        public async Task<CommonResponseTemplate> CreateOffer(CreateOffer.CreateOfferCommand offer)
+        {
+            return await Mediator.Send(offer);
+        }
         #endregion
 
     }

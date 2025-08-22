@@ -54,7 +54,7 @@ namespace Handlers.User
                                 FullName = u.Name,
                                 FirstName = firstName,
                                 LastName = lastName,
-                                ProfileImageUrl = u.ProfileMediaId,
+                                ProfileImageUrl = u.ProfileMediaId ?? null,
                                 Gender = u.IndividualProfile?.Gender,
                                 DateOfBirth = u.IndividualProfile?.DateOfBirth,
                                 IBAN = u.IndividualProfile?.IBAN ?? u.CompanyProfile?.IBAN
