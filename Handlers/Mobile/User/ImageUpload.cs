@@ -38,7 +38,7 @@ namespace Handlers.Mobile.User
             {
                 try
                 {
-                    var user = await UserDL.GetUserOnly(request.Id);
+                    var user = await UserDL.GetUserOnly(request.Id.ToString());
 
                     if (user != null)
                     {

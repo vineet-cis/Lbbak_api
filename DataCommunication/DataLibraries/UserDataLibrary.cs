@@ -24,10 +24,10 @@ namespace DataCommunication.DataLibraries
                 .FirstOrDefaultAsync(x => x.Id == Id && !x.IsDeleted);
         }
 
-        public async Task<User> GetUserOnly(Guid Id)
+        public async Task<User> GetUserOnly(string Id)
         {
             return await context.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id);
+                .FirstOrDefaultAsync(x => x.Id.ToString() == Id);
         }
 
         public async Task<string> GetUserByCodeAndNumber(string? code, string? number)
