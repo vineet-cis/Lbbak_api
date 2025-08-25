@@ -14,7 +14,7 @@ namespace Handlers.User
             public string? FirstName { get; set; }
             public string? LastName { get; set; }
             public string? Gender { get; set; }
-            public string? City { get; set; }
+            public int? City { get; set; }
             public string? MobileNumber { get; set; }
             public string? CountryCode { get; set; }
             public string? Email { get; set; }
@@ -48,6 +48,7 @@ namespace Handlers.User
                         user.MobileNumber = request.MobileNumber;
                         user.Email = request.Email;
                         user.CountryCode = request.CountryCode;
+                        user.CityId = request.City;
 
                         if (user.IndividualProfile != null)
                             user.IndividualProfile.Gender = request.Gender;

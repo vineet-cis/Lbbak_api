@@ -37,7 +37,7 @@ namespace Handlers.Mobile.PromotionalOffer
                 {
                     var user = await UserDL.GetUserOnly(request.Guid);
 
-                    var offers = await OfferDL.GetAvailableOffers(user.CityId);
+                    var offers = await OfferDL.GetAvailableOffers(user.CityId, user.Id.ToString());
 
                     if (offers.Count == 0)
                     {

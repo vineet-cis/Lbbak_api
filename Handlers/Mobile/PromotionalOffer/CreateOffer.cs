@@ -23,6 +23,7 @@ namespace Handlers.Mobile.PromotionalOffer
             public int Category { get; set; }
             public int Scope { get; set; }
             public int City { get; set; }
+            public int Status { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
         }
@@ -59,6 +60,7 @@ namespace Handlers.Mobile.PromotionalOffer
                         LocationLink = request.LocationLink,
                         Type = (PromotionType)request.Type,
                         Scope = (PromotionScope)request.Scope,
+                        Status = (Status)request.Status,
                         CategoryId = request.Category,
                         CityId = request.City,
                         StartDate = request.StartDate,

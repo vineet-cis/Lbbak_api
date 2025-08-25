@@ -43,14 +43,26 @@ namespace DataCommunication.DataLibraries
             return await context.PromotionalOffers.Include(x => x.City).Where(x => x.CreatedBy == guid && x.Status == Status.Active).AsSplitQuery().ToListAsync();
         }
 
-        public async Task<List<PromotionalOffer>> GetAvailableOffers(int? CityId)
+        public async Task<List<PromotionalOffer>> GetAvailableOffers(int? cityId, string userId)
         {
-            return await context.PromotionalOffers.Include(x => x.City).Where(x => x.CityId == CityId && x.Status == Status.Active).AsSplitQuery().ToListAsync();
+            return await context.PromotionalOffers
+                .AsNoTracking() // no change tracking needed for read
+                .Include(x => x.City)
+                .Where(x =>
+                    x.Status == Status.Active &&
+                    x.CreatedBy != userId &&
+                    (
+                        x.Scope == PromotionScope.Public ||
+                        (cityId.HasValue && x.CityId == cityId.Value)
+                    )
+                )
+                .ToListAsync();
         }
+
 
         public async Task<List<OfferCategory>> GetAllCategories()
         {
             return await context.OfferCategories.AsNoTracking().ToListAsync();
-        }
+        } 
     }
 }

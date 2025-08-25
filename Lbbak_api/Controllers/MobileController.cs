@@ -1,8 +1,8 @@
 ﻿using DataCommunication;
 using DataCommunication.DataLibraries;
 using DataCommunication.DTOs;
-using Handlers.Card;
 using Handlers.Event;
+using Handlers.Mobile.City;
 using Handlers.Mobile.Event;
 using Handlers.Mobile.PromotionalOffer;
 using Handlers.Mobile.User;
@@ -137,5 +137,14 @@ namespace Lbbak_api.Controllers
         }
         #endregion
 
+        #region City
+
+        [HttpGet("GetAllCities")]
+        public async Task<CommonResponseTemplateWithDataArrayList<CityDTO>> GetAllCities()
+        {
+            return await Mediator.Send(new GetAllCities.Query());
+        }
+
+        #endregion
     }
 }
