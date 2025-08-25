@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using static DataCommunication.CommonComponents.Enums;
 
 namespace DataCommunication.DataLibraries
@@ -19,6 +20,13 @@ namespace DataCommunication.DataLibraries
             context.PromotionalOffers.Add(offer);
             await context.SaveChangesAsync();
             return offer;
+        }
+
+        public async Task CreateOfferType(OfferCategory category)
+        {
+            context.ChangeTracker.Clear();
+            context.OfferCategories.Add(category);
+            await context.SaveChangesAsync();
         }
 
         public async Task<PromotionalOffer> UpdateOfferMediaId(PromotionalOffer offer, string mediaId)

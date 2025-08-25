@@ -124,6 +124,12 @@ namespace Lbbak_api.Controllers
             });
         }
 
+        [HttpPost("CreateOfferType")]
+        public async Task<CommonResponseTemplate> CreateOffer(CreateOfferType.Command type)
+        {
+            return await Mediator.Send(type);
+        }
+
         [HttpPost("CreateOffer")]
         public async Task<CommonResponseTemplate> CreateOffer(CreateOffer.CreateOfferCommand offer)
         {
