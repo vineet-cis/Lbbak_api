@@ -5,6 +5,7 @@ using DataCommunication.DTOs;
 using Handlers.Helpers;
 using MediatR;
 using MongoDB.Driver;
+using System;
 
 namespace Handlers
 {
@@ -84,8 +85,18 @@ namespace Handlers
                         return new OfferDTO
                         {
                             Guid = c.Guid,
+                            Title = c.Title,
+                            Description = c.Description,
+                            MapLoaction = c.LocationLink,
+                            Type = c.Type.ToString(),
+                            Category = c.Category?.Name ?? null,
+                            Link = c.Link,
                             Status = c.Status.ToString(),
-                            Image = image,
+                            Scope = c.Scope.ToString(),
+                            City = c.City?.Name ?? null,
+                            StartDate = c.StartDate,
+                            EndDate = c.EndDate,
+                            Image = image
                         };
                     }).ToList();
 
@@ -94,7 +105,7 @@ namespace Handlers
                         responseCode = ResponseCode.Success.ToString(),
                         statusCode = HttpStatusCodes.OK,
                         msg = "Offers Fetched Successfully!",
-                        data = offerDtoList
+                        data = _mapper.Map<List<OfferDTO>, List<OfferDTO>>(offerDtoList)
                     };
                 }
                 catch (Exception ex)

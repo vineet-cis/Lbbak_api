@@ -101,15 +101,6 @@ namespace Lbbak_api.Controllers
             return await Mediator.Send(new GetOfferTypes.Query());
         }
 
-        [HttpGet("GetOffer")]
-        public async Task<CommonResponseTemplate<OfferDTO>> GetOffer(string guid)
-        {
-            return await Mediator.Send(new GetOffer.Query
-            {
-                Guid = guid
-            });
-        }
-
         [HttpGet("GetUserOffers")]
         public async Task<CommonResponseTemplateWithDataArrayList<OfferDTO>> GetUserOffers(string guid)
         {
