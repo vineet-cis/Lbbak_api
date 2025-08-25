@@ -125,7 +125,7 @@ namespace Lbbak_api.Controllers
         }
 
         [HttpPost("CreateOfferType")]
-        public async Task<CommonResponseTemplate> CreateOffer(CreateOfferType.Command type)
+        public async Task<CommonResponseTemplate> CreateOffer(CreateOfferType.CreateCommand type)
         {
             return await Mediator.Send(type);
         }

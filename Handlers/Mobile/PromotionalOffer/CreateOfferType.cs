@@ -9,19 +9,19 @@ namespace Handlers.Mobile.PromotionalOffer
 {
     public class CreateOfferType
     {
-        public class Command : IRequest<CommonResponseTemplate>
+        public class CreateCommand : IRequest<CommonResponseTemplate>
         {
             public string? Name { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Command>
+        public class CommandValidator : AbstractValidator<CreateCommand>
         {
             public CommandValidator()
             {
             }
         }
 
-        public class Handler : IRequestHandler<Command, CommonResponseTemplate>
+        public class Handler : IRequestHandler<CreateCommand, CommonResponseTemplate>
         {
             private readonly IMediaService _media;
             private readonly OfferDataLibrary OfferDL;
@@ -31,7 +31,7 @@ namespace Handlers.Mobile.PromotionalOffer
                 _media = mediaService;
                 OfferDL = offerDataLibrary;
             }
-            public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CommonResponseTemplate> Handle(CreateCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
