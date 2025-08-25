@@ -40,7 +40,7 @@ namespace DataCommunication.DataLibraries
 
         public async Task<List<PromotionalOffer>> GetAllOffersForUser(string? guid)
         {
-            return await context.PromotionalOffers.Include(x => x.City).Where(x => x.CreatedBy == guid && x.Status == Status.Active).AsSplitQuery().ToListAsync();
+            return await context.PromotionalOffers.Include(x => x.City).Where(x => x.CreatedBy == guid).AsSplitQuery().ToListAsync();
         }
 
         public async Task<List<PromotionalOffer>> GetAvailableOffers(int? cityId, string userId)
