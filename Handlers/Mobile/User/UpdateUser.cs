@@ -4,7 +4,7 @@ using FluentValidation;
 using Handlers.Helpers;
 using MediatR;
 
-namespace Handlers.User
+namespace Handlers
 {
     public class UpdateUserMobile
     {

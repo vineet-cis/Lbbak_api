@@ -6,7 +6,7 @@ using Handlers.Helpers;
 using MediatR;
 using MongoDB.Driver;
 
-namespace Handlers.Mobile.Event
+namespace Handlers
 {
     public class GetUpcomingEvents
     {

@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using static DataCommunication.CommonComponents.Enums;
 
-namespace Handlers.Mobile.PromotionalOffer
+namespace Handlers
 {
     public class CreateOffer
     {

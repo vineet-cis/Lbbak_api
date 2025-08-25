@@ -3,7 +3,7 @@ using DataCommunication.DataLibraries;
 using Handlers.Helpers;
 using MediatR;
 
-namespace Handlers.Mobile.User
+namespace Handlers
 {
     public class OtpCheck
     {

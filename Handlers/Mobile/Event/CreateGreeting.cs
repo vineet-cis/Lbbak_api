@@ -1,16 +1,14 @@
 ﻿using DataCommunication;
 using DataCommunication.CommonComponents;
 using DataCommunication.DataLibraries;
-using DataCommunication.DTOs;
 using FluentValidation;
 using Handlers.Helpers;
 using Lbbak_api;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System.Text.Json;
 
-namespace Handlers.Mobile.Event
+namespace Handlers
 {
     public class CreateGreeting
     {
@@ -85,7 +83,7 @@ namespace Handlers.Mobile.Event
 
                     int id = await EventDL.CreateEvent(greeting);
 
-                    if(!string.IsNullOrEmpty(mediaId))
+                    if (!string.IsNullOrEmpty(mediaId))
                         await _media.UpdateEventIdAsync(mediaId, id);
 
                     return new CommonResponseTemplate

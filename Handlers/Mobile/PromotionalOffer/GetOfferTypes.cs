@@ -5,7 +5,7 @@ using Handlers.Helpers;
 using MediatR;
 using MongoDB.Driver;
 
-namespace Handlers.Mobile.PromotionalOffer
+namespace Handlers
 {
     public class GetOfferTypes
     {

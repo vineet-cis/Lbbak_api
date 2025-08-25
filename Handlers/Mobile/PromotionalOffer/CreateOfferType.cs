@@ -5,7 +5,7 @@ using Handlers.Helpers;
 using Lbbak_api;
 using MediatR;
 
-namespace Handlers.Mobile.PromotionalOffer
+namespace Handlers
 {
     public class CreateOfferType
     {

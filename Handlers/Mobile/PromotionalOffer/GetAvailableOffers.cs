@@ -6,7 +6,7 @@ using Handlers.Helpers;
 using MediatR;
 using MongoDB.Driver;
 
-namespace Handlers.Mobile.PromotionalOffer
+namespace Handlers
 {
     public class GetAvailableOffers
     {
@@ -84,13 +84,7 @@ namespace Handlers.Mobile.PromotionalOffer
                         return new OfferDTO
                         {
                             Guid = c.Guid,
-                            Title = c.Title,
-                            Description = c.Description,
-                            MapLoaction = c.LocationLink,
-                            Link = c.Link,
                             Status = c.Status.ToString(),
-                            Scope = c.Scope.ToString(),
-                            City = c.City?.Name ?? null,
                             Image = image,
                         };
                     }).ToList();
@@ -99,7 +93,7 @@ namespace Handlers.Mobile.PromotionalOffer
                     {
                         responseCode = ResponseCode.Success.ToString(),
                         statusCode = HttpStatusCodes.OK,
-                        msg = "Cards Fetched Successfully!",
+                        msg = "Offers Fetched Successfully!",
                         data = offerDtoList
                     };
                 }

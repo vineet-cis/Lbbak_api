@@ -7,7 +7,7 @@ using Lbbak_api;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Handlers.Mobile.Event
+namespace Handlers
 {
     public class CreateDocEvent
     {

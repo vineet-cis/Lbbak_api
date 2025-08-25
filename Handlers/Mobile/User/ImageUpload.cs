@@ -6,7 +6,7 @@ using Lbbak_api;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Handlers.Mobile.User
+namespace Handlers
 {
     public class ImageUpload
     {

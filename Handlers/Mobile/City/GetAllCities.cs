@@ -5,7 +5,7 @@ using DataCommunication.DTOs;
 using Handlers.Helpers;
 using MediatR;
 
-namespace Handlers.Mobile.City
+namespace Handlers
 {
     public class GetAllCities
     {

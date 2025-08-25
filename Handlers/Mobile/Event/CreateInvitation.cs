@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Enums = DataCommunication.CommonComponents.Enums;
 
-namespace Handlers.Event
+namespace Handlers
 {
     public class CreateInvitation
     {

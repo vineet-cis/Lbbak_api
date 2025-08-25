@@ -4,7 +4,7 @@ using FluentValidation;
 using Handlers.Helpers;
 using MediatR;
 
-namespace Handlers.Mobile.User
+namespace Handlers
 {
     public class RegisterAsIndividual
     {

@@ -38,6 +38,11 @@ namespace DataCommunication.DataLibraries
             return offer;
         }
 
+        public async Task<PromotionalOffer> GetOffer(string guid)
+        {
+            return await context.PromotionalOffers.Include(x => x.City).AsSplitQuery().FirstOrDefaultAsync(x => x.Guid == guid);
+        }
+
         public async Task<List<PromotionalOffer>> GetAllOffersForUser(string? guid)
         {
             return await context.PromotionalOffers.Include(x => x.City).Where(x => x.CreatedBy == guid).AsSplitQuery().ToListAsync();
