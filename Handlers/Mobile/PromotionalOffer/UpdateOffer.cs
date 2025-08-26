@@ -13,18 +13,18 @@ namespace Handlers
     {
         public class UpdateOfferCommand : IRequest<CommonResponseTemplate>
         {
-            public IFormFile formFile { get; set; }
+            public IFormFile? formFile { get; set; }
             public string Guid { get; set; }
             public string? Title { get; set; }
             public string? Description { get; set; }
             public string? UserId { get; set; }
             public string? Link { get; set; }
             public string? LocationLink { get; set; }
-            public int Type { get; set; }
-            public int Category { get; set; }
-            public int Scope { get; set; }
-            public int City { get; set; }
-            public int Status { get; set; }
+            public int? Type { get; set; }
+            public int? Category { get; set; }
+            public int? Scope { get; set; }
+            public int? City { get; set; }
+            public int? Status { get; set; }
             public DateTime? StartDate { get; set; }
             public DateTime? EndDate { get; set; }
         }
@@ -80,11 +80,19 @@ namespace Handlers
                     if (!string.IsNullOrEmpty(request.Description)) offer.Description = request.Description;
                     if (!string.IsNullOrEmpty(request.Link)) offer.Link = request.Link;
                     if (!string.IsNullOrEmpty(request.LocationLink)) offer.LocationLink = request.LocationLink;
-                    offer.Type = (PromotionType)request.Type;
-                    offer.Scope = (PromotionScope)request.Scope;
-                    offer.Status = (Status)request.Status;
-                    offer.CategoryId = request.Category;
-                    offer.CityId = request.City;
+
+                    if (request.Type != null)
+                        offer.Type = (PromotionType)request.Type;
+
+                    if (request.Scope != null)
+                        offer.Scope = (PromotionScope)request.Scope;
+
+                    if (request.Type != null)
+                        offer.Type = (PromotionType)request.Type;
+
+                    if (request.Status != null)
+                        offer.Status = (Status)request.Status;
+
                     if (request.StartDate.HasValue) offer.StartDate = request.StartDate.Value;
                     if (request.EndDate.HasValue) offer.EndDate = request.EndDate.Value;
 
