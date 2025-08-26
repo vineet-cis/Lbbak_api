@@ -64,7 +64,38 @@ namespace Lbbak_api.Controllers
 
         #endregion
 
+        #region Card
+
+        [HttpGet("EditCard")]
+        public async Task<CommonResponseTemplate<CardResponseDTO>> EditCard(string guid)
+        {
+            return await Mediator.Send(new EditCard.Query
+            {
+                Guid = guid
+            });
+        }
+
+        [HttpGet("GetInvitationCards")]
+        public async Task<CommonResponseTemplateWithDataArrayList<CardResponseDTO>> GetInvitationCards()
+        {
+            return await Mediator.Send(new GetInvitationCards.Query());
+        }
+
+        [HttpGet("GetGreetingCards")]
+        public async Task<CommonResponseTemplateWithDataArrayList<CardResponseDTO>> GetGreetingCards()
+        {
+            return await Mediator.Send(new GetGreetingCards.Query());
+        }
+
+        #endregion
+
         #region Event Management
+
+        [HttpGet("GetEventTypes")]
+        public async Task<CommonResponseTemplateWithDataArrayList<EventTypeDTO>> GetEventTypes()
+        {
+            return await Mediator.Send(new GetEventTypes.Query());
+        }
 
         [HttpGet("GetUpcomingEvents")]
         public async Task<CommonResponseTemplateWithDataArrayList<EventResponseDTO>> GetUpcomingEvents()

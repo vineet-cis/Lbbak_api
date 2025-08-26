@@ -8,6 +8,13 @@
             Inactive = 1
         }
 
+        public enum CardCategory
+        {
+            Both = 0,
+            Invitation = 1,
+            Greeting = 2
+        }
+
         public enum EventCategory
         {
             Invitation = 1,

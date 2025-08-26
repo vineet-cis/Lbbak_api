@@ -33,6 +33,15 @@ namespace DataCommunication.DataLibraries
             return Event.Id;
         }
 
+        public async Task<int> CreateEventType(EventType type)
+        {
+            context.ChangeTracker.Clear();
+            type.CreatedAt = type.UpdatedAt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "UTC", "Central Standard Time");
+            context.EventTypes.Add(type);
+            await context.SaveChangesAsync();
+            return type.Id;
+        }
+
         public async Task<List<Event>> GetAllInvites()
         {
             return await context.Events.Include(x => x.EventOwner).Include(x => x.Congratulators).Include(x => x.Invitees).AsSplitQuery().ToListAsync();
@@ -45,6 +54,11 @@ namespace DataCommunication.DataLibraries
             return await context.Events.Include(x => x.EventOwner).Include(x => x.Congratulators).Include(x => x.Invitees)
                 .Where(x => x.StartDate > today && x.Congratulators != null && x.Congratulators.Any(c => c.UserId == UserId))
                 .AsSplitQuery().ToListAsync();
+        }
+
+        public async Task<List<EventType>> GetEventTypes()
+        {
+            return await context.EventTypes.Where(x => x.Status == CommonComponents.Enums.Status.Active).ToListAsync();
         }
     }
 }

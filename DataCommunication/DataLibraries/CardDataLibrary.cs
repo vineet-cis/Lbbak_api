@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using static DataCommunication.CommonComponents.Enums;
 
 namespace DataCommunication.DataLibraries
 {
@@ -27,6 +28,16 @@ namespace DataCommunication.DataLibraries
         public async Task<List<Card>> GetAllCards()
         {
             return await context.Cards.Include(c => c.EventType).Where(x => x.Status != "Deleted").AsSplitQuery().ToListAsync();
+        }
+
+        public async Task<List<Card>> GetAllInvitationCards()
+        {
+            return await context.Cards.Include(c => c.EventType).Where(x => (x.Category == CardCategory.Invitation || x.Category == CardCategory.Invitation) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
+        }
+
+        public async Task<List<Card>> GetAllGreetingCards()
+        {
+            return await context.Cards.Include(c => c.EventType).Where(x => (x.Category == CardCategory.Greeting || x.Category == CardCategory.Both) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
         }
 
         public async Task UpdateCard(Card card)

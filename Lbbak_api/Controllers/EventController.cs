@@ -1,5 +1,6 @@
 ﻿using DataCommunication;
 using DataCommunication.DTOs;
+using Handlers;
 using Handlers.Event;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,12 @@ namespace Lbbak_api.Controllers
         public async Task<CommonResponseTemplateWithDataArrayList<EventResponseDTO>> GetAllInvitations()
         {
             return await Mediator.Send(new GetAllInvites.Query());
+        }
+
+        [HttpPost("CreateEventType")]
+        public async Task<CommonResponseTemplate> CreateCard(CreateEventType.CreateTypeCommand type)
+        {
+            return await Mediator.Send(type);
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿namespace DataCommunication
+﻿using static DataCommunication.CommonComponents.Enums;
+
+namespace DataCommunication
 {
     public class Card
     {
         public int Id { get; set; }
         public string? Name { get; set; }
         public EventType EventType { get; set; }
+        public CardCategory Category { get; set; }
         public int? EventTypeId { get; set; }
         public string? Description { get; set; }
         public string? CardType { get; set; }
