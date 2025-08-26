@@ -111,11 +111,12 @@ namespace Lbbak_api.Controllers
         }
 
         [HttpGet("GetAvailableOffers")]
-        public async Task<CommonResponseTemplateWithDataArrayList<OfferDTO>> GetAvailableOffers(string guid)
+        public async Task<CommonResponseTemplateWithDataArrayList<OfferDTO>> GetAvailableOffers(string guid, int cityId)
         {
             return await Mediator.Send(new GetAvailableOffers.Query
             {
-                Guid = guid
+                Guid = guid,
+                CityId = cityId
             });
         }
 
@@ -130,6 +131,13 @@ namespace Lbbak_api.Controllers
         {
             return await Mediator.Send(offer);
         }
+
+        [HttpPost("UpdateOffer")]
+        public async Task<CommonResponseTemplate> UpdateOffer(UpdateOffer.UpdateOfferCommand offer)
+        {
+            return await Mediator.Send(offer);
+        }
+
         #endregion
 
         #region City

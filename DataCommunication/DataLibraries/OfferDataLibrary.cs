@@ -38,6 +38,14 @@ namespace DataCommunication.DataLibraries
             return offer;
         }
 
+        public async Task<PromotionalOffer> UpdateOffer(PromotionalOffer offer)
+        {
+            context.ChangeTracker.Clear();
+            context.Entry(offer).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return offer;
+        }
+
         public async Task<PromotionalOffer> GetOffer(string guid)
         {
             return await context.PromotionalOffers.Include(x => x.City).AsSplitQuery().FirstOrDefaultAsync(x => x.Guid == guid);

@@ -14,6 +14,7 @@ namespace Handlers
         public class Query : IRequest<CommonResponseTemplateWithDataArrayList<OfferDTO>>
         {
             public string? Guid { get; set; }
+            public int CityId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, CommonResponseTemplateWithDataArrayList<OfferDTO>>
@@ -38,7 +39,7 @@ namespace Handlers
                 {
                     var user = await UserDL.GetUserOnly(request.Guid);
 
-                    var offers = await OfferDL.GetAvailableOffers(user.CityId, user.Id.ToString());
+                    var offers = await OfferDL.GetAvailableOffers(request.CityId, user.Id.ToString());
 
                     if (offers.Count == 0)
                     {
