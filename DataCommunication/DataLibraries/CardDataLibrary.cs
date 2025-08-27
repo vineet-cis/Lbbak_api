@@ -25,6 +25,18 @@ namespace DataCommunication.DataLibraries
             return await context.Cards.FirstOrDefaultAsync(x => x.Guid == guid);
         }
 
+        public async Task AddCardUseCount(string guid)
+        {
+            context.ChangeTracker.Clear();
+            var card = await context.Cards.FirstOrDefaultAsync(x => x.Guid.ToString() == guid);
+            if(card != null)
+            {
+                card.UseCount += 1;
+                context.Entry(card).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task<List<Card>> GetAllCards()
         {
             return await context.Cards.Include(c => c.EventType).Where(x => x.Status != "Deleted").AsSplitQuery().ToListAsync();

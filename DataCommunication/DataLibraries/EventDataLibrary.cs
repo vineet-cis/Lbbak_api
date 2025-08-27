@@ -33,6 +33,25 @@ namespace DataCommunication.DataLibraries
             return Event.Id;
         }
 
+        public async Task AddEventMedia(string eventGuid, string mediaId, bool isVideo)
+        {
+            context.ChangeTracker.Clear();
+            var Event = await context.Events.FirstOrDefaultAsync(x => x.Guid == eventGuid);
+
+            if(Event == null) return;
+
+            var eventMedia = new EventMedia
+            {
+                EventId = Event.Id,
+                MediaId = mediaId,
+                isVideo = isVideo
+            };
+
+            context.EventMedia.Add(eventMedia);
+            await context.SaveChangesAsync();
+        }
+
+
         public async Task<int> CreateEventType(EventType type)
         {
             context.ChangeTracker.Clear();

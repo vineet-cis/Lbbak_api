@@ -10,6 +10,13 @@ namespace Lbbak_api.Controllers
     [Route("api/[controller]")]
     public class EventController : BaseAPIController
     {
+
+        [HttpGet("GetAllEventTypes")]
+        public async Task<CommonResponseTemplateWithDataArrayList<EventTypeAdminDTO>> GetAllEventTypes()
+        {
+            return await Mediator.Send(new GetAllEventTypes.Query());
+        }
+
         [HttpGet("GetAllInvitations")]
         public async Task<CommonResponseTemplateWithDataArrayList<EventResponseDTO>> GetAllInvitations()
         {

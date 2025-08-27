@@ -2,104 +2,80 @@
 using DataCommunication;
 using DataCommunication.DataLibraries;
 using DataCommunication.DTOs;
+using FluentValidation;
 using Handlers.Helpers;
+using Lbbak_api;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
+using System.Text.Json;
 
 namespace Handlers
 {
     public class EditCard
     {
-        public class Query : IRequest<CommonResponseTemplate<CardResponseDTO>>
+        public class EditCardCommand : IRequest<CommonResponseTemplate>
         {
-            public string Guid { get; set; }
+            public string CardGuid { get; set; }
+            public string EventGuid { get; set; }
+            public string? AnnotationsJson { get; set; }
+            public IFormFile? formFile { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, CommonResponseTemplate<CardResponseDTO>>
+        public class CommandValidator : AbstractValidator<EditCardCommand>
         {
-            public CardDataLibrary CardDL { get; }
-
-            private readonly IMapper _mapper;
-            private readonly IMongoCollection<MediaFile> _mediaCollection;
-
-            public Handler(CardDataLibrary cardDataLibrary, IMapper mapper, IMongoClient client)
+            public CommandValidator()
             {
-                CardDL = cardDataLibrary;
-                _mapper = mapper;
-                var db = client.GetDatabase("MediaStorage");
-                _mediaCollection = db.GetCollection<MediaFile>("media");
             }
+        }
 
-            public async Task<CommonResponseTemplate<CardResponseDTO>> Handle(Query request, CancellationToken cancellationToken)
+        public class Handler : IRequestHandler<EditCardCommand, CommonResponseTemplate>
+        {
+            private readonly IMediaService _media;
+            private readonly CardDataLibrary CardDL;
+            private readonly EventDataLibrary EventDL;
+
+            public Handler(IMediaService mediaService, CardDataLibrary cardDataLibrary, EventDataLibrary eventDataLibrary)
             {
-                try
+                _media = mediaService;
+                CardDL = cardDataLibrary;
+                EventDL = eventDataLibrary;
+            }
+            public async Task<CommonResponseTemplate> Handle(EditCardCommand request, CancellationToken cancellationToken)
+            {
+                bool isVideo = false;
+
+                var options = new JsonSerializerOptions
                 {
-                    var card = await CardDL.GetCardByGuid(request.Guid);
+                    PropertyNameCaseInsensitive = true
+                };
 
-                    if (card == null)
-                    {
-                        return new CommonResponseTemplate<CardResponseDTO>
-                        {
-                            responseCode = ResponseCode.Empty.ToString(),
-                            statusCode = HttpStatusCodes.OK,
-                            msg = "Card Not Found!",
-                            data = null
-                        };
-                    }
+                var annotations = !string.IsNullOrEmpty(request.AnnotationsJson)
+                    ? JsonSerializer.Deserialize<List<TextAnnotation>>(request.AnnotationsJson, options)
+                    : new List<TextAnnotation>();
 
-                    var mediaId = card.ProfileMediaId;
+                string mediaId = "";
 
-                    MediaFile media = null;
-
-                    if (!string.IsNullOrEmpty(mediaId))
-                    {
-                        media = await _mediaCollection.Find(m => m.Id == mediaId).FirstOrDefaultAsync();
-                    }
-
-                    string? thumbnailBase64 = null;
-                    List<TextAnnotation>? annotations = null;
-
-                    if (media != null)
-                    {
-                        annotations = media.Annotations;
-
-                        var imageData = media.FlattenedData?.Length > 0
-                            ? media.FlattenedData
-                            : media.Data?.Length > 0
-                                ? media.Data
-                                : null;
-
-                        if (imageData != null && !string.IsNullOrEmpty(media.ContentType))
-                            thumbnailBase64 = $"data:{media.ContentType};base64,{Convert.ToBase64String(imageData)}";
-                    }
-
-                    var cardDto = new CardResponseDTO
-                    {
-                        Guid = card.Guid,
-                        Id = card.Id,
-                        Annotations = annotations,
-                        ThumbnailBase64 = thumbnailBase64
-                    };
-
-                    return new CommonResponseTemplate<CardResponseDTO>
-                    {
-                        responseCode = ResponseCode.Success.ToString(),
-                        statusCode = HttpStatusCodes.OK,
-                        msg = "Card Fetched Successfully!",
-                        data = cardDto
-                    };
-
-                }
-                catch (Exception ex)
+                if (request.formFile != null && request.formFile.Length > 0)
                 {
-                    return new CommonResponseTemplate<CardResponseDTO>
-                    {
-                        responseCode = ResponseCode.InternalServerError.ToString(),
-                        statusCode = HttpStatusCodes.InternalServerError,
-                        msg = ex.Message.ToString(),
-                        data = null
-                    };
+                    mediaId = await _media.UploadAsync(request.formFile, annotations);
+
+                    var extension = Path.GetExtension(request.formFile.FileName).ToLower();
+
+                    string[] videoExtensions = { ".mp4", ".avi", ".mov", ".mkv" };
+                    isVideo = videoExtensions.Contains(extension);
                 }
+
+                await CardDL.AddCardUseCount(request.CardGuid);
+                await EventDL.AddEventMedia(request.EventGuid, mediaId, isVideo);
+
+                return new CommonResponseTemplate
+                {
+                    responseCode = ResponseCode.Success.ToString(),
+                    statusCode = HttpStatusCodes.OK,
+                    msg = "Card Edited Successfully",
+                    data = null
+                };
             }
         }
     }

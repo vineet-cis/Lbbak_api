@@ -66,13 +66,10 @@ namespace Lbbak_api.Controllers
 
         #region Card
 
-        [HttpGet("EditCard")]
-        public async Task<CommonResponseTemplate<CardResponseDTO>> EditCard(string guid)
+        [HttpPost("EditCard")]
+        public async Task<CommonResponseTemplate> EditCard(EditCard.EditCardCommand card)
         {
-            return await Mediator.Send(new EditCard.Query
-            {
-                Guid = guid
-            });
+            return await Mediator.Send(card);
         }
 
         [HttpGet("GetInvitationCards")]

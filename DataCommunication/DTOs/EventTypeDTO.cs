@@ -1,6 +1,4 @@
-﻿using static DataCommunication.CommonComponents.Enums;
-
-namespace DataCommunication.DTOs
+﻿namespace DataCommunication.DTOs
 {
     public class EventTypeDTO
     {

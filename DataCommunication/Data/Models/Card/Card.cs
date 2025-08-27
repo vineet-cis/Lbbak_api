@@ -5,6 +5,7 @@ namespace DataCommunication
     public class Card
     {
         public int Id { get; set; }
+        public int UseCount { get; set; }
         public string? Name { get; set; }
         public EventType EventType { get; set; }
         public CardCategory Category { get; set; }
@@ -13,6 +14,6 @@ namespace DataCommunication
         public string? CardType { get; set; }
         public string? Status { get; set; } = "Active";
         public string? ProfileMediaId { get; set; }
-        public string? Guid { get; set; }
+        public string Guid { get; set; }
     }
 }

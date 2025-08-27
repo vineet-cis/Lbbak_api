@@ -46,6 +46,7 @@ namespace Handlers
                         Status = (Status)request.Status,
                         ActiveFrom = request.ActiveFrom ?? DateTime.MinValue,
                         ActiveTo = request.ActiveTo ?? DateTime.MinValue,
+                        CityId = request.CityId,
                         Guid = Helper.GetGUID()
                     });
 
