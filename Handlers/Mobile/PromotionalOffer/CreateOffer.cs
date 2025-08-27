@@ -70,7 +70,7 @@ namespace Handlers
                     var mediaId = "";
 
                     if (request.formFile != null && request.formFile.Length > 0)
-                        mediaId = await _media.UploadAsync(request.formFile, null, null, null, offer.Id);
+                        mediaId = await _media.UploadAsync(request.formFile, "Offer");
 
                     await OfferDL.UpdateOfferMediaId(offer, mediaId);
 

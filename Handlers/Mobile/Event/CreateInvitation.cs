@@ -77,7 +77,7 @@ namespace Handlers
                     var mediaId = "";
 
                     if (request.formFile != null && request.formFile.Length > 0)
-                        mediaId = await _media.UploadAsync(request.formFile, null, null, id, null);
+                        mediaId = await _media.UploadAsync(request.formFile, "Event");
 
                     await EventDL.UpdateEventMediaId(id, mediaId);
 

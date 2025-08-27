@@ -36,11 +36,10 @@ namespace Handlers.Card
                             {
                                 Guid = card.Guid,
                                 Name = card.Name,
-                                EventType = card.EventType,
-                                CardType = card.CardType,
+                                EventType = card.EventType.Name,
+                                CardType = card.CardType.ToString(),
                                 Description = card.Description,
                                 Status = card.Status,
-                                ProfileMediaId = card.ProfileMediaId
                             };
 
                             return new CommonResponseTemplate<CardResponseDTO>

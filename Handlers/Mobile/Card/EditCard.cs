@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using DataCommunication;
+﻿using DataCommunication;
 using DataCommunication.DataLibraries;
-using DataCommunication.DTOs;
 using FluentValidation;
 using Handlers.Helpers;
 using Lbbak_api;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
 using System.Text.Json;
 
 namespace Handlers
@@ -58,7 +55,7 @@ namespace Handlers
 
                 if (request.formFile != null && request.formFile.Length > 0)
                 {
-                    mediaId = await _media.UploadAsync(request.formFile, annotations);
+                    mediaId = await _media.UploadAsync(request.formFile, "Event", annotations);
 
                     var extension = Path.GetExtension(request.formFile.FileName).ToLower();
 

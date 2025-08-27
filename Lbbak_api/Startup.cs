@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System.Text;
+using static Handlers.Helpers.Cloudinary;
 
 namespace Lbbak_api
 {
@@ -155,6 +156,7 @@ namespace Lbbak_api
             services.AddScoped<OfferDataLibrary, OfferDataLibrary>();
             services.AddScoped<CityDataLibrary, CityDataLibrary>();
             services.AddSingleton<IMediaService, MediaService>();
+            services.AddSingleton<ICloudinaryService, CloudinaryService>();
 
         }
 

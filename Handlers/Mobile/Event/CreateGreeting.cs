@@ -58,7 +58,7 @@ namespace Handlers
                     string mediaId = "";
 
                     if (request.formFile != null && request.formFile.Length > 0)
-                        mediaId = await _media.UploadAsync(request.formFile, annotations);
+                        mediaId = await _media.UploadAsync(request.formFile, "Event", annotations);
 
                     var greeting = new DataCommunication.Event
                     {
@@ -82,9 +82,6 @@ namespace Handlers
                     };
 
                     int id = await EventDL.CreateEvent(greeting);
-
-                    if (!string.IsNullOrEmpty(mediaId))
-                        await _media.UpdateEventIdAsync(mediaId, id);
 
                     return new CommonResponseTemplate
                     {

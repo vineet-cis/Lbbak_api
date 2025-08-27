@@ -52,36 +52,22 @@ namespace Handlers
                         };
                     }
 
-                    var mediaIds = offers
-                        .Select(c => c.MediaId)
+                    var mediaIds = offers.Select(c => c.MediaId)
                         .Where(id => !string.IsNullOrEmpty(id))
                         .Distinct()
                         .ToList();
 
-                    var mediaDict = (await _mediaCollection
-                            .Find(m => mediaIds.Contains(m.Id))
-                            .ToListAsync())
+                    var mediaList = await _mediaCollection.Find(m => mediaIds.Contains(m.Id)).ToListAsync();
+
+                    var mediaDict = mediaList
                         .Where(m => !string.IsNullOrEmpty(m.Id))
                         .ToDictionary(m => m.Id!, m => m);
 
-                    var offerDtoList = offers.AsParallel().Select(c =>
+                    var offerDtoList = offers.Select(c =>
                     {
                         mediaDict.TryGetValue(c.MediaId ?? string.Empty, out var media);
 
-                        string? image = null;
-
-                        if (media != null)
-                        {
-                            var imageData = media.FlattenedData?.Length > 0
-                                ? media.FlattenedData
-                                : media.Data?.Length > 0
-                                    ? media.Data
-                                    : null;
-
-                            if (imageData != null && !string.IsNullOrEmpty(media.ContentType))
-                                image = $"data:{media.ContentType};base64,{Convert.ToBase64String(imageData)}";
-
-                        }
+                        string image = media?.MediaUrl ?? "";
 
                         return new OfferDTO
                         {

@@ -42,10 +42,10 @@ namespace Handlers
 
                     if (user != null)
                     {
-                        var mediaId = "";
+                        var mediaId = user.ProfileMediaId;
                         if(request.formFile != null && request.formFile.Length > 0)
                         {
-                            mediaId = await _media.UploadAsync(request.formFile, null, user.Id.ToString(), null, null);
+                            mediaId = await _media.UploadAsync(request.formFile, "User", null, mediaId);
                             user.ProfileMediaId = mediaId;
                             await UserDL.UpdateUser(user);
                         }

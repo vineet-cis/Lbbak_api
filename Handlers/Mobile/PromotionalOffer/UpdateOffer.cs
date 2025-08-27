@@ -71,8 +71,8 @@ namespace Handlers
                         }
                         else
                         {
-                            mediaId = await _media.UploadAsync(request.formFile, null, null, null, offer.Id);
-                            offer.MediaId = mediaId;
+                            //mediaId = await _media.UploadAsync(request.formFile, null, null, null, offer.Id);
+                            //offer.MediaId = mediaId;
                         }
                     }
 

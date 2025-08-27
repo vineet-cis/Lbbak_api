@@ -50,8 +50,9 @@ namespace Handlers
                             Name = c.Name,
                             ActiveFrom = c.ActiveFrom,
                             ActiveTo = c.ActiveTo,
-                            Status = c.Status,
-                            City = c.City ?? null,
+                            Status = c.Status.ToString(),
+                            City = c.City?.Name,
+                            CityId = c.City?.Id,
                         };
 
                     }).ToList();

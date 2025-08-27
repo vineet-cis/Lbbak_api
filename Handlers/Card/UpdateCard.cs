@@ -6,6 +6,7 @@ using Lbbak_api;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using static DataCommunication.CommonComponents.Enums;
 
 namespace Handlers.Card
 {
@@ -16,7 +17,7 @@ namespace Handlers.Card
             public string? Guid { get; set; }
             public string? Name { get; set; }
             public string? Description { get; set; }
-            public string? CardType { get; set; }
+            public int CardType { get; set; }
             public int? EventType { get; set; }
             public string? AnnotationsJson { get; set; }
             public IFormFile? formFile { get; set; }
@@ -71,7 +72,7 @@ namespace Handlers.Card
                     }
                     else
                     {
-                        mediaId = await _media.UploadAsync(request.formFile, annotations);
+                        mediaId = await _media.UploadAsync(request.formFile, "Card", annotations);
                         card.ProfileMediaId = mediaId;
                     }
                 }
@@ -81,7 +82,7 @@ namespace Handlers.Card
 
                 card.Name = request.Name ?? card.Name;
                 card.Description = request.Description ?? card.Description;
-                card.CardType = request.CardType ?? card.CardType;
+                card.CardType = (CardType)request.CardType;
                 card.EventTypeId = request.EventType == 0 ? null : request.EventType;
 
                 await CardDL.UpdateCard(card);

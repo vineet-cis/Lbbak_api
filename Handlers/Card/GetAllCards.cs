@@ -45,66 +45,32 @@ namespace Handlers.Card
                         };
                     }
 
-                    var mediaIds = cards
-                        .Select(c => c.ProfileMediaId)
+                    var mediaIds = cards.Select(c => c.ProfileMediaId)
                         .Where(id => !string.IsNullOrEmpty(id))
                         .Distinct()
                         .ToList();
 
-                    var mediaDict = (await _mediaCollection
-                            .Find(m => mediaIds.Contains(m.Id))
-                            .ToListAsync())
-                        .Where(m => !string.IsNullOrEmpty(m.Id)) // filter out nulls
+                    var mediaList = await _mediaCollection.Find(m => mediaIds.Contains(m.Id)).ToListAsync();
+
+                    var mediaDict = mediaList
+                        .Where(m => !string.IsNullOrEmpty(m.Id))
                         .ToDictionary(m => m.Id!, m => m);
 
-
-                    // Prepare DTOs
-                    var cardDtoList = cards.AsParallel().Select(c =>
+                    var cardDtoList = cards.Select(c =>
                     {
                         mediaDict.TryGetValue(c.ProfileMediaId ?? string.Empty, out var media);
-
-                        string? thumbnailBase64 = null;
-                        string? imageUrl = null;
-                        List<TextAnnotation>? annotations = null;
-
-                        if (media != null)
-                        {
-                            imageUrl = $"/Image/GetImage?id={media.Id}";
-                            annotations = media.Annotations;
-
-                            var imageData = media.FlattenedData?.Length > 0
-                                ? media.FlattenedData
-                                : media.Data?.Length > 0
-                                    ? media.Data
-                                    : null;
-
-                            if (imageData != null && !string.IsNullOrEmpty(media.ContentType))
-                            {
-                                if (media.ContentType.Equals("image/svg+xml", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    thumbnailBase64 = $"data:{media.ContentType};base64,{Convert.ToBase64String(imageData)}";
-                                }
-                                else
-                                {
-                                    var thumb = Helper.CreateThumbnail(imageData, 150, 150);
-                                    thumbnailBase64 = $"data:{media.ContentType};base64,{Convert.ToBase64String(thumb)}";
-                                }
-                            }
-                        }
-
                         return new CardResponseDTO
                         {
                             Guid = c.Guid,
                             Name = c.Name,
                             Description = c.Description,
-                            EventType = c.EventType,
-                            ProfileMediaId = c.ProfileMediaId,
+                            EventType = c.EventType?.Name,
                             Status = c.Status,
-                            ImageUrl = imageUrl,
-                            Annotations = annotations,
-                            ThumbnailBase64 = thumbnailBase64
+                            ImageUrl = media?.MediaUrl,
+                            Annotations = media?.Annotations,
                         };
                     }).ToList();
+
 
                     return new CommonResponseTemplateWithDataArrayList<CardResponseDTO>
                     {
@@ -125,19 +91,6 @@ namespace Handlers.Card
                         data = null
                     };
                 }
-            }
-
-            public async Task<List<TextAnnotation>> GetAnnotations(string id)
-            {
-                if (string.IsNullOrWhiteSpace(id) || string.IsNullOrEmpty(id))
-                    return null;
-
-                var media = await _mediaCollection.Find(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (media == null)
-                    return null;
-                else
-                    return media.Annotations;
             }
         }
     }

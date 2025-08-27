@@ -25,23 +25,24 @@ namespace Lbbak_api.Controllers
 
             var media = await _mediaCollection.Find(m => m.Id == id).FirstOrDefaultAsync();
 
-            if (media == null || media.Data == null)
+            if (media == null || media.MediaUrl == null)
                 return NotFound();
 
-            return File(media.Data, media.ContentType ?? "");
+            return Ok(media.MediaUrl);
         }
 
         [HttpGet("GetFlattenedImage")]
         public async Task<IActionResult> GetFlattenedImage(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var media = await _mediaCollection.Find(m => m.Id == id).FirstOrDefaultAsync();
 
-            if (media == null)
+            if (media == null || media.FlattenedImageUrl == null)
                 return NotFound();
-            else if(media.FlattenedData == null)
-                return File(media.Data, media.ContentType ?? "");
 
-            return File(media.FlattenedData, media.ContentType ?? "");
+            return Ok(media.FlattenedImageUrl);
         }
 
         [HttpGet("GetImageWithAnnotations")]
@@ -54,7 +55,7 @@ namespace Lbbak_api.Controllers
 
             var response = new
             {
-                imageUrl = $"/Image/GetImage?id={media.Id}",
+                imageUrl = media.MediaUrl,
                 annotations = media.Annotations
             };
 

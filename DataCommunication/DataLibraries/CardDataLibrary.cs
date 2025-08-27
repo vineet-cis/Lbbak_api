@@ -44,12 +44,12 @@ namespace DataCommunication.DataLibraries
 
         public async Task<List<Card>> GetAllInvitationCards()
         {
-            return await context.Cards.Include(c => c.EventType).Where(x => (x.Category == CardCategory.Invitation || x.Category == CardCategory.Invitation) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
+            return await context.Cards.Include(c => c.EventType).Where(x => (x.CardType == CardType.Greeting || x.CardType == CardType.Both) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
         }
 
         public async Task<List<Card>> GetAllGreetingCards()
         {
-            return await context.Cards.Include(c => c.EventType).Where(x => (x.Category == CardCategory.Greeting || x.Category == CardCategory.Both) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
+            return await context.Cards.Include(c => c.EventType).Where(x => (x.CardType == CardType.Greeting || x.CardType == CardType.Both) && x.Status != "Deleted").AsSplitQuery().ToListAsync();
         }
 
         public async Task UpdateCard(Card card)

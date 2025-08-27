@@ -8,7 +8,7 @@
             Inactive = 1
         }
 
-        public enum CardCategory
+        public enum CardType
         {
             Both = 0,
             Invitation = 1,
