@@ -7,14 +7,14 @@ namespace Handlers
 {
     public class EditPermissions
     {
-        public class Command : IRequest<CommonResponseTemplate>
+        public class EditCommand : IRequest<CommonResponseTemplate>
         {
             public Guid Id { get; set; }
             public string[]? Permissions { get; set; }
             public string[]? Countries { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, CommonResponseTemplate>
+        public class Handler : IRequestHandler<EditCommand, CommonResponseTemplate>
         {
             private readonly AdminDataLibrary AdminDL;
 
@@ -23,7 +23,7 @@ namespace Handlers
                 AdminDL = adminDataLibrary;
             }
 
-            public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CommonResponseTemplate> Handle(EditCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
