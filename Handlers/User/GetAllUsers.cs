@@ -3,6 +3,7 @@ using DataCommunication;
 using DataCommunication.DataLibraries;
 using Handlers.Helpers;
 using MediatR;
+using MongoDB.Driver;
 
 namespace Handlers.User
 {
@@ -16,11 +17,14 @@ namespace Handlers.User
             public UserDataLibrary UserDL { get; }
 
             private readonly IMapper _mapper;
+            private readonly IMongoCollection<MediaFile> _mediaCollection;
 
-            public Handler(UserDataLibrary userDataLibrary, IMapper mapper)
+            public Handler(UserDataLibrary userDataLibrary, IMapper mapper, IMongoClient client)
             {
                 UserDL = userDataLibrary;
                 _mapper = mapper;
+                var db = client.GetDatabase("MediaStorage");
+                _mediaCollection = db.GetCollection<MediaFile>("media");
             }
 
             public async Task<CommonResponseTemplateWithDataArrayList<UserResponseDto>> Handle(Query request, CancellationToken cancellationToken)
@@ -31,11 +35,25 @@ namespace Handlers.User
 
                     if(users.Count > 0)
                     {
+
+                        var mediaIds = users.Select(c => c.ProfileMediaId)
+                        .Where(id => !string.IsNullOrEmpty(id))
+                        .Distinct()
+                        .ToList();
+
+                        var mediaList = await _mediaCollection.Find(m => mediaIds.Contains(m.Id)).ToListAsync();
+
+                        var mediaDict = mediaList
+                            .Where(m => !string.IsNullOrEmpty(m.Id))
+                            .ToDictionary(m => m.Id!, m => m);
+
                         var userDtoList = users.Select(u =>
                         {
                             var nameParts = (u.Name ?? string.Empty).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
                             var firstName = nameParts.Length > 0 ? nameParts[0] : string.Empty;
                             var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty;
+
+                            mediaDict.TryGetValue(u.ProfileMediaId ?? string.Empty, out var media);
 
                             return new UserResponseDto
                             {
@@ -54,7 +72,7 @@ namespace Handlers.User
                                 FullName = u.Name,
                                 FirstName = firstName,
                                 LastName = lastName,
-                                ProfileImageUrl = u.ProfileMediaId ?? null,
+                                ProfileImageUrl = media?.MediaUrl ?? null,
                                 Gender = u.IndividualProfile?.Gender,
                                 DateOfBirth = u.IndividualProfile?.DateOfBirth,
                                 IBAN = u.IndividualProfile?.IBAN ?? u.CompanyProfile?.IBAN

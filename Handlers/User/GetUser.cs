@@ -2,6 +2,7 @@
 using DataCommunication.DataLibraries;
 using Handlers.Helpers;
 using MediatR;
+using MongoDB.Driver;
 
 namespace Handlers.User
 {
@@ -14,11 +15,15 @@ namespace Handlers.User
 
         public class Handler : IRequestHandler<Query, CommonResponseTemplate<UserResponseDto>>
         {
+            private readonly IMongoCollection<MediaFile> _mediaCollection;
+
             public UserDataLibrary UserDL { get; }
 
-            public Handler(UserDataLibrary userDataLibrary)
+            public Handler(UserDataLibrary userDataLibrary, IMongoClient client)
             {
                 UserDL = userDataLibrary;
+                var db = client.GetDatabase("MediaStorage");
+                _mediaCollection = db.GetCollection<MediaFile>("media");
             }
 
             public async Task<CommonResponseTemplate<UserResponseDto>> Handle(Query request, CancellationToken cancellationToken)
@@ -32,6 +37,8 @@ namespace Handlers.User
                         var nameParts = (user.Name ?? string.Empty).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
                         var firstName = nameParts.Length > 0 ? nameParts[0] : string.Empty;
                         var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty;
+
+                        var media = await _mediaCollection.Find(m => m.Id == user.ProfileMediaId).FirstOrDefaultAsync();
 
                         var model = new UserResponseDto
                         {
@@ -50,7 +57,7 @@ namespace Handlers.User
                             FullName = user.Name,
                             FirstName = firstName,
                             LastName = lastName,
-                            ProfileImageUrl = user.ProfileMediaId,
+                            ProfileImageUrl = media.MediaUrl,
                             Gender = user.IndividualProfile?.Gender,
                             DateOfBirth = user.IndividualProfile?.DateOfBirth,
                             IBAN = user.IndividualProfile?.IBAN ?? user.CompanyProfile?.IBAN,

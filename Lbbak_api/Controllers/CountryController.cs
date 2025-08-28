@@ -16,7 +16,7 @@ namespace Lbbak_api.Controllers
         }
 
         [HttpPost("CreateCountry")]
-        public async Task<IActionResult> CreateAdmin([FromBody] string Name)
+        public async Task<IActionResult> CreateCountry([FromBody] string Name)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -43,7 +43,7 @@ namespace Lbbak_api.Controllers
             return Ok(new
             {
                 Countries = countries,
-                Message = "Country created successfully."
+                Message = "Country fetched successfully."
             });
         }
     }
