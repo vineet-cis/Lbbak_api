@@ -3,7 +3,7 @@
     public class OfferDTO
     {
         public string? Guid { get; set; }
-        public string? Image { get; set; }
+        public string? Media { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string? MapLoaction { get; set; }

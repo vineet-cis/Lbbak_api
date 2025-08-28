@@ -5,15 +5,13 @@ using DataCommunication.DTOs;
 using Handlers.Helpers;
 using MediatR;
 using MongoDB.Driver;
-using System;
 
 namespace Handlers
 {
-    public class GetUserOffers
+    public class GetOffers
     {
         public class Query : IRequest<CommonResponseTemplateWithDataArrayList<OfferDTO>>
         {
-            public string? Guid { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, CommonResponseTemplateWithDataArrayList<OfferDTO>>
@@ -34,7 +32,7 @@ namespace Handlers
             {
                 try
                 {
-                    var offers = await OfferDL.GetAllOffersForUser(request.Guid);
+                    var offers = await OfferDL.GetAllOffers();
 
                     if (offers.Count == 0)
                     {
@@ -78,6 +76,7 @@ namespace Handlers
                             EndDate = c.EndDate,
                             Media = media?.MediaUrl
                         };
+
                     }).ToList();
 
                     return new CommonResponseTemplateWithDataArrayList<OfferDTO>

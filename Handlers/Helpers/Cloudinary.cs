@@ -10,7 +10,7 @@ namespace Handlers.Helpers
         public interface ICloudinaryService
         {
             Task<string> UploadImageAsync(IFormFile file, string? folder, List<DataCommunication.TextAnnotation>? annotations = null);
-            Task<string> UploadVideoAsync(IFormFile file, string folder);
+            Task<string> UploadVideoAsync(IFormFile file, string? folder);
         }
 
         public class CloudinaryService : ICloudinaryService
@@ -54,7 +54,7 @@ namespace Handlers.Helpers
             }
 
 
-            public async Task<string> UploadVideoAsync(IFormFile file, string folder)
+            public async Task<string> UploadVideoAsync(IFormFile file, string? folder)
             {
                 using var stream = file.OpenReadStream();
 

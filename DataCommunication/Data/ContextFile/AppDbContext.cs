@@ -21,6 +21,7 @@ namespace DataCommunication
         public DbSet<Event> Events { get; set; }
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<EventInvitee> EventInvitees { get; set; }
         public DbSet<EventCongratulator> EventCongratulators { get; set; }
         public DbSet<EventMedia> EventMedia { get; set; }

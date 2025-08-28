@@ -52,7 +52,7 @@ namespace DataCommunication.DataLibraries
         {
             return await context.Users.CountAsync(u => u.UserTypeId == 2);
         }
-
+            
         public async Task<int> GetDesignerUsers()
         {
             return await context.Users.CountAsync(u => u.UserTypeId == 3);
@@ -75,7 +75,6 @@ namespace DataCommunication.DataLibraries
                 ).AsNoTracking().AsSplitQuery()
                 .ToListAsync();
         }
-
 
         public async Task<User> GetUserById(Guid Id)
         {

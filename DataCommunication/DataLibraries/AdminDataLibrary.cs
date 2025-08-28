@@ -14,14 +14,12 @@ namespace DataCommunication.DataLibraries
         public async Task<Admin> GetAdmin(Guid Id)
         {
             return await context.Admins
-                .Include(a => a.AdminRole)
                 .FirstOrDefaultAsync(a => a.Id == Id && a.IsActive && !a.IsDeleted);
         }
 
         public async Task<Admin> GetAdminByEmail(string email)
         {
             return await context.Admins
-                .Include(a => a.AdminRole)
                 .FirstOrDefaultAsync(a => a.Email == email && a.IsActive && !a.IsDeleted);
         }
 
@@ -42,6 +40,18 @@ namespace DataCommunication.DataLibraries
             refreshToken.IsRevoked = true;
             context.Entry(refreshToken).State = EntityState.Modified;
             await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAdmin(Admin admin)
+        {
+            context.ChangeTracker.Clear();
+            context.Entry(admin).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<Admin> getAdmin(Guid guid)
+        {
+            return await context.Admins.FirstOrDefaultAsync(x => x.Id == guid);
         }
 
         public async Task CreateAdminRefreshToken(RefreshToken refreshToken)

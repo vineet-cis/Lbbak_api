@@ -1,5 +1,6 @@
 ﻿using DataCommunication;
 using DataCommunication.DataLibraries;
+using Handlers;
 using Lbbak_api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace Lbbak_api.Controllers
 {
     [ApiController]
     [Route("api/admin")]
-    public class AdminController : ControllerBase
+    public class AdminController : BaseAPIController
     {
         private readonly AdminDataLibrary AdminDL;
 
@@ -35,7 +36,6 @@ namespace Lbbak_api.Controllers
                 FullName = dto.FullName,
                 Email = dto.Email,
                 PasswordHash = hashedPassword,
-                AdminRoleId = dto.AdminRoleId,
                 IsActive = true,
                 IsDeleted = false,
                 CreatedAt = DateTime.UtcNow
@@ -48,7 +48,6 @@ namespace Lbbak_api.Controllers
                 newAdmin.Id,
                 newAdmin.FullName,
                 newAdmin.Email,
-                RoleId = newAdmin.AdminRoleId,
                 Message = "Admin created successfully."
             });
         }
@@ -82,7 +81,6 @@ namespace Lbbak_api.Controllers
                 admin.Id,
                 admin.FullName,
                 admin.Email,
-                Role = admin.AdminRole.Name,
                 AccessToken = accessToken,
                 RefreshToken = validToken != null ? validToken.Token : refreshToken,
                 Message = "Login successful"
@@ -135,5 +133,15 @@ namespace Lbbak_api.Controllers
                 Message = "Logout successful. Refresh token revoked."
             });
         }
+
+        #region PostMethods
+
+        [HttpPost("EditPermissions")]
+        public async Task<CommonResponseTemplate> UpdateCard(EditPermissions.Command admin)
+        {
+            return await Mediator.Send(admin);
+        }
+
+        #endregion
     }
 }

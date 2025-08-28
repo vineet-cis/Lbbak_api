@@ -4,6 +4,7 @@ using DataCommunication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lbbak_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250828063747_UpdatesNew")]
+    partial class UpdatesNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,11 +31,8 @@ namespace Lbbak_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AdminRoleId")
+                    b.Property<int>("AdminRoleId")
                         .HasColumnType("int");
-
-                    b.PrimitiveCollection<string>("Countries")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -50,9 +50,6 @@ namespace Lbbak_api.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("Permissions")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -192,7 +189,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("DataCommunication.DesignerUser", b =>
@@ -692,9 +689,13 @@ namespace Lbbak_api.Migrations
 
             modelBuilder.Entity("DataCommunication.Admin", b =>
                 {
-                    b.HasOne("DataCommunication.AdminRole", null)
+                    b.HasOne("DataCommunication.AdminRole", "AdminRole")
                         .WithMany("Admins")
-                        .HasForeignKey("AdminRoleId");
+                        .HasForeignKey("AdminRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdminRole");
                 });
 
             modelBuilder.Entity("DataCommunication.Card", b =>

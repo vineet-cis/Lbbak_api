@@ -83,7 +83,7 @@ namespace Handlers
                             City = c.City?.Name ?? null,
                             StartDate = c.StartDate,
                             EndDate = c.EndDate,
-                            Image = image
+                            Media = image
                         };
                     }).ToList();
 

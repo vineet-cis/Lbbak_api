@@ -49,7 +49,6 @@ namespace Lbbak_api.Helpers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, admin.Id.ToString()),
-                new Claim(ClaimTypes.Role, admin.AdminRole.Name),
                 new Claim(JwtRegisteredClaimNames.Email, admin.Email),
                 new Claim("FullName", admin.FullName)
             };

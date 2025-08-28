@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using static DataCommunication.CommonComponents.Enums;
 
 namespace DataCommunication.DataLibraries
@@ -56,6 +55,11 @@ namespace DataCommunication.DataLibraries
             return await context.PromotionalOffers.Include(x => x.City).Include(x => x.Category).Where(x => x.CreatedBy == guid).AsSplitQuery().ToListAsync();
         }
 
+        public async Task<List<PromotionalOffer>> GetAllOffers()
+        {
+            return await context.PromotionalOffers.Include(x => x.City).Include(x => x.Category).AsSplitQuery().AsNoTracking().ToListAsync();
+        }
+
         public async Task<List<PromotionalOffer>> GetAvailableOffers(int? cityId, string userId)
         {
             return await context.PromotionalOffers
@@ -77,6 +81,6 @@ namespace DataCommunication.DataLibraries
         public async Task<List<OfferCategory>> GetAllCategories()
         {
             return await context.OfferCategories.AsNoTracking().ToListAsync();
-        } 
+        }
     }
 }
