@@ -68,7 +68,7 @@ namespace Handlers.Card
                 {
                     if (!string.IsNullOrEmpty(mediaId))
                     {
-                        await _media.UpdateAsync(mediaId, request.formFile, annotations);
+                        await _media.UploadAsync(request.formFile, "Card", annotations, mediaId);
                     }
                     else
                     {
