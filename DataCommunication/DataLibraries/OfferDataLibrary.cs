@@ -45,6 +45,19 @@ namespace DataCommunication.DataLibraries
             return offer;
         }
 
+        public async Task DeleteCategory(int Id)
+        {
+            context.ChangeTracker.Clear();
+            var cat = await context.OfferCategories.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (cat == null)
+                throw new FileNotFoundException();
+
+            cat.IsDeleted = true;
+            context.Entry(cat).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
+
         public async Task<PromotionalOffer> GetOffer(string guid)
         {
             return await context.PromotionalOffers.Include(x => x.City).AsSplitQuery().FirstOrDefaultAsync(x => x.Guid == guid);
@@ -80,7 +93,7 @@ namespace DataCommunication.DataLibraries
 
         public async Task<List<OfferCategory>> GetAllCategories()
         {
-            return await context.OfferCategories.AsNoTracking().ToListAsync();
+            return await context.OfferCategories.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync();
         }
     }
 }

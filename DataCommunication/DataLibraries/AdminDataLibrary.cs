@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using static DataCommunication.CommonComponents.Enums;
 
 namespace DataCommunication.DataLibraries
 {
@@ -14,13 +15,13 @@ namespace DataCommunication.DataLibraries
         public async Task<Admin> GetAdmin(Guid Id)
         {
             return await context.Admins
-                .FirstOrDefaultAsync(a => a.Id == Id && a.IsActive && !a.IsDeleted);
+                .FirstOrDefaultAsync(a => a.Id == Id && a.Status == Status.Active);
         }
 
         public async Task<Admin> GetAdminByEmail(string email)
         {
             return await context.Admins
-                .FirstOrDefaultAsync(a => a.Email == email && a.IsActive && !a.IsDeleted);
+                .FirstOrDefaultAsync(a => a.Email == email && a.Status == Status.Active);
         }
 
         public async Task<RefreshToken> GetStoredToken(Guid adminId, string token)

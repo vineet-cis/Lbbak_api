@@ -15,5 +15,7 @@ namespace DataCommunication
         public string Password { get; set; }
         [Required]
         public int AdminRoleId { get; set; }
+        public string[]? Countries { get; set; }
+        public string[]? Permissions { get; set; }
     }
 }

@@ -36,9 +36,9 @@ namespace Lbbak_api.Controllers
                 FullName = dto.FullName,
                 Email = dto.Email,
                 PasswordHash = hashedPassword,
-                IsActive = true,
-                IsDeleted = false,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Countries = dto.Countries,
+                Permissions = dto.Permissions
             };
 
             await AdminDL.CreateAdmin(newAdmin);
@@ -136,8 +136,8 @@ namespace Lbbak_api.Controllers
 
         #region PostMethods
 
-        [HttpPost("EditPermissions")]
-        public async Task<CommonResponseTemplate> UpdateCard(EditPermissions.EditCommand admin)
+        [HttpPost("EditAdmin")]
+        public async Task<CommonResponseTemplate> EditAdmin(EditAdmin.Command admin)
         {
             return await Mediator.Send(admin);
         }

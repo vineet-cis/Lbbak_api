@@ -5,16 +5,20 @@ using MediatR;
 
 namespace Handlers
 {
-    public class EditPermissions
+    public class EditAdmin
     {
-        public class EditCommand : IRequest<CommonResponseTemplate>
+        public class Command : IRequest<CommonResponseTemplate>
         {
             public Guid Id { get; set; }
+            public string? Name { get; set; }
+            public string? MobileNumber { get; set; }
+            public string? Email { get; set; }
+            public string? Password { get; set; }
             public string[]? Permissions { get; set; }
             public string[]? Countries { get; set; }
         }
 
-        public class Handler : IRequestHandler<EditCommand, CommonResponseTemplate>
+        public class Handler : IRequestHandler<Command, CommonResponseTemplate>
         {
             private readonly AdminDataLibrary AdminDL;
 
@@ -23,7 +27,7 @@ namespace Handlers
                 AdminDL = adminDataLibrary;
             }
 
-            public async Task<CommonResponseTemplate> Handle(EditCommand request, CancellationToken cancellationToken)
+            public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
@@ -31,6 +35,14 @@ namespace Handlers
 
                     if (admin != null)
                     {
+                        if (!string.IsNullOrEmpty(request.Name)) admin.FullName = request.Name;
+                        if (!string.IsNullOrEmpty(request.MobileNumber)) admin.Mobile = request.MobileNumber;
+                        if (!string.IsNullOrEmpty(request.Email)) admin.Email = request.Email;
+
+                        if (!string.IsNullOrEmpty(request.Password))
+                            if (!BCrypt.Net.BCrypt.Verify(request.Password, admin.PasswordHash))
+                                admin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
                         admin.Permissions = request.Permissions ?? admin.Permissions;
                         admin.Countries = request.Countries ?? admin.Countries;
 
