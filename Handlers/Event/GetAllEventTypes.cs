@@ -46,13 +46,13 @@ namespace Handlers
                     {
                         return new EventTypeAdminDTO
                         {
-                            Id = c.Id,
+                            Id = c.Guid,
                             Name = c.Name,
                             ActiveFrom = c.ActiveFrom,
                             ActiveTo = c.ActiveTo,
                             Status = c.Status.ToString(),
                             City = c.City?.Name,
-                            CityId = c.City?.Id,
+                            CityId = c.CityId,
                         };
 
                     }).ToList();
