@@ -39,7 +39,7 @@ namespace DataCommunication.DataLibraries
 
         public async Task<List<Card>> GetAllCards()
         {
-            return await context.Cards.Include(c => c.EventType).Where(x => x.Status != "Deleted").AsSplitQuery().ToListAsync();
+            return await context.Cards.Include(c => c.EventType).AsSplitQuery().ToListAsync();
         }
 
         public async Task<List<Card>> GetAllInvitationCards()
