@@ -79,5 +79,17 @@ namespace DataCommunication.DataLibraries
         {
             return await context.EventTypes.Where(x => x.Status == CommonComponents.Enums.Status.Active).ToListAsync();
         }
+
+        public async Task<EventType> GetEventType(string guid)
+        {
+            return await context.EventTypes.FirstOrDefaultAsync(x => x.Guid == guid);
+        }
+
+        public async Task UpdateType(EventType type)
+        {
+            context.ChangeTracker.Clear();
+            context.Entry(type).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
     }
 }

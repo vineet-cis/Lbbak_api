@@ -28,5 +28,11 @@ namespace Lbbak_api.Controllers
         {
             return await Mediator.Send(type);
         }
+
+        [HttpPost("EditEventType")]
+        public async Task<CommonResponseTemplate> EditEventType(EditEventType.EditCommand type)
+        {
+            return await Mediator.Send(type);
+        }
     }
 }

@@ -84,21 +84,23 @@ namespace Lbbak_api
                     Scheme = "ApiKeyScheme"
                 });
 
+                options.CustomSchemaIds(type => type.FullName);
+
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "ApiKey"
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "ApiKey"
+                            },
+                            In = ParameterLocation.Header
                         },
-                        In = ParameterLocation.Header
-                    },
-                    new List<string>()
-                }
-            });
+                        new List<string>()
+                    }
+                });
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -121,7 +123,7 @@ namespace Lbbak_api
                     },
                     Array.Empty<string>()
                 }
-            });
+                });
             });
 
             // JWT Authentication
