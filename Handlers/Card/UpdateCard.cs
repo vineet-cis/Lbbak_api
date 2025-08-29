@@ -21,6 +21,7 @@ namespace Handlers.Card
             public int? EventType { get; set; }
             public string? AnnotationsJson { get; set; }
             public IFormFile? formFile { get; set; }
+            public string? Status { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
@@ -84,6 +85,7 @@ namespace Handlers.Card
                 card.Description = request.Description ?? card.Description;
                 card.CardType = (CardType)request.CardType;
                 card.EventTypeId = request.EventType == 0 ? null : request.EventType;
+                card.Status = request.Status ?? card.Status;
 
                 await CardDL.UpdateCard(card);
 

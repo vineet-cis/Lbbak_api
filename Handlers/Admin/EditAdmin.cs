@@ -2,6 +2,7 @@
 using DataCommunication.DataLibraries;
 using Handlers.Helpers;
 using MediatR;
+using static DataCommunication.CommonComponents.Enums;
 
 namespace Handlers
 {
@@ -13,6 +14,7 @@ namespace Handlers
             public string? Name { get; set; }
             public string? MobileNumber { get; set; }
             public string? Email { get; set; }
+            public int Status { get; set; }
             public string? Password { get; set; }
             public string[]? Permissions { get; set; }
             public string[]? Countries { get; set; }
@@ -38,6 +40,8 @@ namespace Handlers
                         if (!string.IsNullOrEmpty(request.Name)) admin.FullName = request.Name;
                         if (!string.IsNullOrEmpty(request.MobileNumber)) admin.Mobile = request.MobileNumber;
                         if (!string.IsNullOrEmpty(request.Email)) admin.Email = request.Email;
+
+                        admin.Status = (Status)request.Status;
 
                         if (!string.IsNullOrEmpty(request.Password))
                             if (!BCrypt.Net.BCrypt.Verify(request.Password, admin.PasswordHash))
