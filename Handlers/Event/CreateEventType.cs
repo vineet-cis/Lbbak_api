@@ -1,11 +1,7 @@
 ﻿using DataCommunication;
 using DataCommunication.DataLibraries;
-using FluentValidation;
 using Handlers.Helpers;
-using Lbbak_api;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System.Text.Json;
 using static DataCommunication.CommonComponents.Enums;
 
 namespace Handlers
@@ -19,13 +15,6 @@ namespace Handlers
             public int? CityId { get; set; }
             public DateTime? ActiveFrom { get; set; }
             public DateTime? ActiveTo { get; set; }
-        }
-
-        public class CommandValidator : AbstractValidator<CreateTypeCommand>
-        {
-            public CommandValidator()
-            {
-            }
         }
 
         public class Handler : IRequestHandler<CreateTypeCommand, CommonResponseTemplate>

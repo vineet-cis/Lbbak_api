@@ -137,7 +137,7 @@ namespace Lbbak_api.Controllers
         #region PostMethods
 
         [HttpPost("EditAdmin")]
-        public async Task<CommonResponseTemplate> EditAdmin(EditAdmin.Command admin)
+        public async Task<CommonResponseTemplate> EditAdmin(EditAdmin.EditAdminCommand admin)
         {
             return await Mediator.Send(admin);
         }

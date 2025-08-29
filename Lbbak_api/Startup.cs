@@ -84,8 +84,6 @@ namespace Lbbak_api
                     Scheme = "ApiKeyScheme"
                 });
 
-                options.CustomSchemaIds(type => type.FullName);
-
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {

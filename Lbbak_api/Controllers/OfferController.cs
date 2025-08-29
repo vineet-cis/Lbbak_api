@@ -28,7 +28,7 @@ namespace Lbbak_api.Controllers
         }
 
         [HttpPost("DeleteOfferType")]
-        public async Task<CommonResponseTemplate> DeleteOfferCategory(DeleteOfferType.Command category)
+        public async Task<CommonResponseTemplate> DeleteOfferCategory(DeleteOfferType.DeleteCommand category)
         {
             return await Mediator.Send(category);
         }

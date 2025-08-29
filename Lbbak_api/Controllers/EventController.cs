@@ -24,7 +24,7 @@ namespace Lbbak_api.Controllers
         }
 
         [HttpPost("CreateEventType")]
-        public async Task<CommonResponseTemplate> CreateCard(CreateEventType.CreateTypeCommand type)
+        public async Task<CommonResponseTemplate> CreateEventType(CreateEventType.CreateTypeCommand type)
         {
             return await Mediator.Send(type);
         }

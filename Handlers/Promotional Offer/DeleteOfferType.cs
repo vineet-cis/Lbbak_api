@@ -7,12 +7,12 @@ namespace Handlers
 {
     public class DeleteOfferType
     {
-        public class Command : IRequest<CommonResponseTemplate>
+        public class DeleteCommand : IRequest<CommonResponseTemplate>
         {
             public int Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, CommonResponseTemplate>
+        public class Handler : IRequestHandler<DeleteCommand, CommonResponseTemplate>
         {
             private readonly OfferDataLibrary OfferDL;
 
@@ -21,7 +21,7 @@ namespace Handlers
                 OfferDL = offerDataLibrary;
             }
 
-            public async Task<CommonResponseTemplate> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CommonResponseTemplate> Handle(DeleteCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
