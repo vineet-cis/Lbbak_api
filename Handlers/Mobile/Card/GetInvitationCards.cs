@@ -67,7 +67,7 @@ namespace Handlers
                             Guid = c.Guid,
                             Name = c.Name,
                             Status = c.Status,
-                            EventType = c.EventType.Name,
+                            EventType = c.EventType?.Name ?? "",
                             ImageUrl = media?.MediaUrl,
                             Annotations = media?.Annotations,
                         };
