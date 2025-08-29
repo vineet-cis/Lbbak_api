@@ -43,13 +43,14 @@ namespace Handlers
                     if (user != null)
                     {
                         var mediaId = user.ProfileMediaId;
-                        if(request.formFile != null && request.formFile.Length > 0)
+                        if (request.formFile != null && request.formFile.Length > 0)
                         {
                             mediaId = await _media.UploadAsync(request.formFile, "User", null, mediaId);
                             user.ProfileMediaId = mediaId;
                             await UserDL.UpdateUser(user);
                         }
                         else
+                        {
                             return new CommonResponseTemplate
                             {
                                 responseCode = ResponseCode.Empty.ToString(),
@@ -57,6 +58,7 @@ namespace Handlers
                                 msg = "Invalid Image!",
                                 data = null
                             };
+                        }
 
                         return new CommonResponseTemplate
                         {

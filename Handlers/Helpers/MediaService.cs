@@ -39,51 +39,38 @@ namespace Lbbak_api
                 var MediaId = mediaId;
 
                 if (file.ContentType.StartsWith("video/", StringComparison.OrdinalIgnoreCase))
-                {
                     mediaUrl = await cloudi.UploadVideoAsync(file, folder);
-                }
                 else if (file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+                    mediaUrl = await cloudi.UploadImageAsync(file, folder);
+                else
+                    throw new NotSupportedException("Unsupported file type. Only images and videos are allowed.");
+
+                if (!string.IsNullOrEmpty(mediaId))
                 {
-                    string flattenedImageUrl = "";
+                    var update = Builders<MediaFile>.Update
+                        .Set(m => m.FileName, file.FileName)
+                        .Set(m => m.ContentType, file.ContentType)
+                        .Set(m => m.MediaUrl, mediaUrl)
+                        .Set(m => m.Annotations, annotations);
 
-                    if (annotations != null && annotations.Count > 0)
-                        mediaUrl = await cloudi.UploadImageAsync(file, folder, annotations);
-                    else
-                        mediaUrl = await cloudi.UploadImageAsync(file, folder);
-
-                    if (!string.IsNullOrEmpty(mediaId))
-                    {
-                        var update = Builders<MediaFile>.Update
-                            .Set(m => m.FileName, file.FileName)
-                            .Set(m => m.ContentType, file.ContentType)
-                            .Set(m => m.MediaUrl, mediaUrl)
-                            .Set(m => m.FlattenedImageUrl, flattenedImageUrl)
-                            .Set(m => m.Annotations, annotations);
-
-                        await _mediaCollection.UpdateOneAsync(
-                            m => m.Id == mediaId,
-                            update
-                        );
-                    }
-                    else
-                    {
-                        var media = new MediaFile
-                        {
-                            FileName = file.FileName,
-                            ContentType = file.ContentType,
-                            Annotations = annotations,
-                            MediaUrl = mediaUrl,
-                            FlattenedImageUrl = flattenedImageUrl,
-                        };
-
-                        await _mediaCollection.InsertOneAsync(media);
-
-                        MediaId = media.Id;
-                    }
+                    await _mediaCollection.UpdateOneAsync(
+                        m => m.Id == mediaId,
+                        update
+                    );
                 }
                 else
                 {
-                    throw new NotSupportedException("Unsupported file type. Only images and videos are allowed.");
+                    var media = new MediaFile
+                    {
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        Annotations = annotations,
+                        MediaUrl = mediaUrl,
+                    };
+
+                    await _mediaCollection.InsertOneAsync(media);
+
+                    MediaId = media.Id;
                 }
 
                 return MediaId;

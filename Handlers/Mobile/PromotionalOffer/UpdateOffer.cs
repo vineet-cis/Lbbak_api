@@ -67,12 +67,12 @@ namespace Handlers
                     {
                         if (!string.IsNullOrEmpty(mediaId))
                         {
-                            await _media.UpdateAsync(mediaId, request.formFile);
+                            await _media.UploadAsync(request.formFile, "Offer", mediaId: mediaId);
                         }
                         else
                         {
-                            //mediaId = await _media.UploadAsync(request.formFile, null, null, null, offer.Id);
-                            //offer.MediaId = mediaId;
+                            mediaId = await _media.UploadAsync(request.formFile, "Offer");
+                            offer.MediaId = mediaId;
                         }
                     }
 
@@ -87,8 +87,11 @@ namespace Handlers
                     if (request.Scope != null)
                         offer.Scope = (PromotionScope)request.Scope;
 
-                    if (request.Type != null)
-                        offer.Type = (PromotionType)request.Type;
+                    if (request.Category != null && request.Category != 0)
+                        offer.CategoryId = request.Category.Value;
+
+                    if (request.City != null && request.City != 0)
+                        offer.CityId = request.City.Value;
 
                     if (request.Status != null)
                         offer.Status = (Status)request.Status;
