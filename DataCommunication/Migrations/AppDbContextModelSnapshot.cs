@@ -59,7 +59,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("AdminRoleId");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.AdminRole", b =>
@@ -76,7 +76,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdminRoles");
+                    b.ToTable("AdminRoles", (string)null);
 
                     b.HasData(
                         new
@@ -128,7 +128,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.City", b =>
@@ -149,7 +149,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("City");
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.CompanyUser", b =>
@@ -175,7 +175,7 @@ namespace Lbbak_api.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("CompanyUsers");
+                    b.ToTable("CompanyUsers", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.Country", b =>
@@ -192,7 +192,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.DesignerUser", b =>
@@ -215,7 +215,7 @@ namespace Lbbak_api.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("DesignerUsers");
+                    b.ToTable("DesignerUsers", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.Event", b =>
@@ -289,7 +289,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.EventCongratulator", b =>
@@ -337,7 +337,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventCongratulators");
+                    b.ToTable("EventCongratulators", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.EventInvitee", b =>
@@ -372,7 +372,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventInvitees");
+                    b.ToTable("EventInvitees", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.EventMedia", b =>
@@ -397,7 +397,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("EventMedia");
+                    b.ToTable("EventMedia", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.EventType", b =>
@@ -442,7 +442,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("EventTypes");
+                    b.ToTable("EventTypes", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.IndividualUser", b =>
@@ -474,7 +474,7 @@ namespace Lbbak_api.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("IndividualUsers");
+                    b.ToTable("IndividualUsers", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.OfferCategory", b =>
@@ -493,7 +493,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OfferCategories");
+                    b.ToTable("OfferCategories", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.PromotionalOffer", b =>
@@ -570,7 +570,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("PromotionalOffers");
+                    b.ToTable("PromotionalOffers", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.RefreshToken", b =>
@@ -601,7 +601,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.User", b =>
@@ -656,7 +656,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasIndex("UserTypeId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DataCommunication.UserType", b =>
@@ -673,7 +673,7 @@ namespace Lbbak_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserTypes");
+                    b.ToTable("UserTypes", (string)null);
 
                     b.HasData(
                         new
